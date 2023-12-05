@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('letters', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('letter_date');
             $table->timestamp('received_date');
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->string('information');
             $table->string('from');
             $table->string('to');
+            $table->string('classification_code');
+            $table->foreign('classification_code')->references('code')->on('classifications');
             $table->enum('type', ['incoming', 'outgoing']);
         });
     }
