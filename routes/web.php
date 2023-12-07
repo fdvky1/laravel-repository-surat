@@ -46,6 +46,10 @@ Route::middleware(['auth'])->group(function(){
 
 Route::post('/profile/update-photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.update.photo');
 
-Route::get('/users/create', 'UserController@create')->name('users.create');
-Route::post('/users', 'UserController@store')->name('users.store');
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+//users
+Route::middleware(['user'])->group(function () {
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+});
