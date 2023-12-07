@@ -25,12 +25,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Profile Photo</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,15 +35,18 @@
                                 <tr>
                                     <td>{{ $user->id }}</td>
                                     <td>
+                                    @if ($user->profile_photo)
+                                        <img src="{{ asset('storage/profiles/' . $user->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold" alt="">
+                                    @else
+                                        <figure class="img-profile rounded-circle avatar font-weight-bold" data-initial="{{ $user->name[0] }}"></figure>
+                                    @endif
                                         <a href="{{ route('users.show', ['id' => $user->id]) }}">
                                         {{ $user->name . ' ' . $user->last_name }}
                                         </a>
                                     </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
-                                    <td>{{ $user->profile_photo }}</td>
                                     <td>{{ $user->created_at }}</td>
-                                    <td>{{ $user->updated_at }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
