@@ -50,7 +50,7 @@ class LetterController extends Controller
         try {
             $user = auth()->user();
             $newLetter = $request->validated();
-
+            
             $newLetter['from'] = $user->id;
             $letter = Letter::create($newLetter);
             if ($request->hasFile('attachments')) {
