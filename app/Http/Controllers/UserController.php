@@ -14,6 +14,17 @@ class UserController extends Controller
         return view('users.index', ['users' => $users]);
     }
 
+    public function show($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            return view('users.show', ['user' => $user]);
+        } else {
+            return redirect()->route('users.index')->with('error', 'User not found.');
+        }
+    }
+
     public function create()
     {
         return view('users.create');

@@ -37,8 +37,11 @@
                             @foreach($users as $user)
                                 <tr>
                                     <td>{{ $user->id }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->last_name }}</td>
+                                    <td>
+                                        <a href="{{ route('users.show', ['id' => $user->id]) }}">
+                                        {{ $user->name . ' ' . $user->last_name }}
+                                        </a>
+                                    </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
                                     <td>{{ $user->profile_photo }}</td>
