@@ -14,18 +14,14 @@ return new class extends Migration
         Schema::create('letters', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('created_by');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamp('letter_date');
-            $table->timestamp('received_date');
+            $table->timestamp('received_date')->nullable();
             $table->string('summary')->default('');
             $table->string('letter_number');
-            $table->string('information');
-            $table->string('from');
-            $table->string('to');
+            $table->string('note')->default('');
+            $table->foreignId('from')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('to')->constrained('users')->cascadeOnDelete();
             $table->string('classification_code');
             $table->foreign('classification_code')->references('code')->on('classifications');
-            $table->enum('type', ['incoming', 'outgoing']);
         });
     }
 
