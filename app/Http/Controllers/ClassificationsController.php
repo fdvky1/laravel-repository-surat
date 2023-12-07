@@ -15,11 +15,18 @@ class ClassificationsController extends Controller
 {
     public function show(Request $request): View
     {
+        $search = $request->input('search');
+
+        $classifications = Classification::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('code', 'like', '%' . $search . '%');
+            })
+            ->get();
+
         return view('classifications.index', [
-            'classifications' => Classification::render($request->search)->get(),
+            'classifications' => $classifications,
         ]);
     }
-    
     public function store(StoreClassificationRequest $request): RedirectResponse
     {
         try {
