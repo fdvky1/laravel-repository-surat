@@ -20,9 +20,15 @@ class LetterController extends Controller
     public function outgoing(Request $request): View
     {
         $user = auth()->user();
-        $letters = Letter::outgoing($user->id)->render($request->search)->get();
+        $search = $request->input('search');
 
-        return view('outgoing.list',[
+        $letters = Letter::where('from', $user->id)
+            ->when($search, function ($query) use ($search) {
+                return $query->where('summary', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        return view('outgoing.list', [
             'data' => $letters,
         ]);
     }
@@ -30,9 +36,15 @@ class LetterController extends Controller
     public function incoming(Request $request): View
     {
         $user = auth()->user();
-        $letters = Letter::incoming($user->id)->render($request->search)->get();
+        $search = $request->input('search');
 
-        return view('incoming.list',[
+        $letters = Letter::where('to', $user->id)
+            ->when($search, function ($query) use ($search) {
+                return $query->where('summary', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        return view('incoming.list', [
             'data' => $letters,
         ]);
     }
@@ -50,7 +62,7 @@ class LetterController extends Controller
         try {
             $user = auth()->user();
             $newLetter = $request->validated();
-            
+
             $newLetter['from'] = $user->id;
             $letter = Letter::create($newLetter);
             if ($request->hasFile('attachments')) {
