@@ -1,5 +1,14 @@
 @extends('layouts.admin')
-
+<!-- @push('scripts')
+    <script>
+        function confirmDelete(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                event.preventDefault();
+                document.getElementById('delete-form-' + userId).submit();
+            }
+        }
+    </script>
+@endpush -->
 @section('main-content')
 <div class="container">
         <div class="row">
@@ -15,7 +24,7 @@
                     </div>
                     <div>
                         <a href="users/create">
-                        <button type="button" class="btn btn-primary">Create User +</button>
+                        <button type="button" class="btn btn-success">Create User +</button>
                         </a>
                     </div>
                 </div>
@@ -28,6 +37,7 @@
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Created At</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,9 +57,17 @@
                                 <td>{{ Str::limit($user->email, 20) }}</td>
                                 <td>{{ Str::limit($user->role, 20) }}</td>
                                 <td>{{ $user->created_at }}</td>
+                                <td>
+                                    <a href="{{ route('users.edit', ['user' => $user->id]) }}" class="btn btn-primary">Edit</a>
+                                    <button class="btn btn-danger" onclick="if (confirm('Are you sure you want to delete this user?')) { event.preventDefault(); document.getElementById('delete-form-{{ $user->id }}').submit(); }">Delete</button>
+                                    <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', ['user' => $user->id]) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                        </tbody>
 
                     </table>
                 </div>
