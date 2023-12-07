@@ -19,7 +19,6 @@ class ClassificationsController extends Controller
             'classifications' => Classification::render($request->search)->get(),
         ]);
     }
-    
     public function store(StoreClassificationRequest $request): RedirectResponse
     {
         try {

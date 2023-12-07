@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,5 @@ Route::middleware(['auth'])->group(function(){
     Route::put('/classifications/{id}', 'ClassificationsController@update')->name('classifications.update');
     Route::delete('/classifications/{id}', 'ClassificationsController@remove')->name('classifications.delete');
 });
+
+Route::post('/profile/update-photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.update.photo');
