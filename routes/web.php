@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,7 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::post('/profile/update-photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.update.photo');
+
+Route::get('/users/create', 'UserController@create')->name('users.create');
+Route::post('/users', 'UserController@store')->name('users.store');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');

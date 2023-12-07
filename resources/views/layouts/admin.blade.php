@@ -63,6 +63,12 @@
                 <span>{{ __('Profile') }}</span>
             </a>
         </li>
+        <li class="nav-item {{ Nav::isRoute('users') }} ">
+        <a class="nav-link" href="{{ route('users.index') }}">
+                <i class="fas fa-fw fa-user"></i>
+                <span>{{ __('Users') }}</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -278,6 +284,7 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Profile') }}
                             </a>
+
                             <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Settings') }}
