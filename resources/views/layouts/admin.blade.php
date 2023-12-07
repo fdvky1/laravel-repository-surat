@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fstdropdown.min.css') }}" rel="stylesheet">
 
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.png') }}" rel="icon" type="image/png">
@@ -60,6 +61,26 @@
             <a class="nav-link" href="{{ route('profile') }}">
                 <i class="fas fa-fw fa-user"></i>
                 <span>{{ __('Profile') }}</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-envelope"></i>
+                <span>Letters</span>
+            </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('incoming') }}">Incoming</a>
+                    <a class="collapse-item" href="{{ route('outgoing') }}">outgoing</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item {{ Nav::isRoute('classifications') }}">
+            <a class="nav-link" href="{{ route('classifications') }}">
+                <i class="fas fa-fw fa-sort"></i>
+                <span>Classifications</span>
             </a>
         </li>
 
@@ -326,8 +347,10 @@
 
 <!-- Scripts -->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<script src="{{ asset('js/fstdropdown.min.js') }}"></script>
+@stack('script')
 </body>
 </html>
