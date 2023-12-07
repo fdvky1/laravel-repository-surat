@@ -23,10 +23,10 @@
                 <dd class="col-sm-9">{{ $data->classification->description }}</dd>
 
                 <dt class="col-sm-3">Sender</dt>
-                <dd class="col-sm-9">{{ $data->from }}</dd>
-
-                <dt class="col-sm-3">Created By</dt>
                 <dd class="col-sm-9">{{ $data->sender?->name }}</dd>
+
+                <dt class="col-sm-3">Reripient</dt>
+                <dd class="col-sm-9">{{ $data->recipient?->name }}</dd>
 
                 <dt class="col-sm-3">Created At</dt>
                 <dd class="col-sm-9">{{ $data->formatted_created_at }}</dd>
