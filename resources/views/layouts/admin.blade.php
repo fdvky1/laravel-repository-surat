@@ -63,12 +63,6 @@
                 <span>{{ __('Profile') }}</span>
             </a>
         </li>
-        <li class="nav-item {{ Nav::isRoute('users') }} ">
-        <a class="nav-link" href="{{ route('users.index') }}">
-                <i class="fas fa-fw fa-user"></i>
-                <span>{{ __('Users') }}</span>
-            </a>
-        </li>
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -78,15 +72,22 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{ route('incoming') }}">Incoming</a>
-                    <a class="collapse-item" href="{{ route('outgoing') }}">outgoing</a>
+                    <a class="collapse-item" href="{{ route('outgoing.list') }}">Outgoing</a>
                 </div>
             </div>
         </li>
 
-        <li class="nav-item {{ Nav::isRoute('classifications') }}">
-            <a class="nav-link" href="{{ route('classifications') }}">
+        <li class="nav-item {{ Nav::isRoute('classifications.list') }}">
+            <a class="nav-link" href="{{ route('classifications.list') }}">
                 <i class="fas fa-fw fa-sort"></i>
                 <span>Classifications</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ Nav::isRoute('users') }} ">
+            <a class="nav-link" href="{{ route('users.index') }}">
+                <i class="fas fa-fw fa-user-group"></i>
+                <span>{{ __('Users') }}</span>
             </a>
         </li>
 

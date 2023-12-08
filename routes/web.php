@@ -32,27 +32,34 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/letter/{id}', 'LetterController@show')->name('letter.show');
-    Route::delete('/letter/{id}', 'LetterController@remove')->name('letter.delete');
-    Route::get('/outgoing', 'LetterController@outgoing')->name('outgoing');
-    Route::get('/outgoing/create', 'LetterController@create')->name('outgoing.create');
-    Route::post('/outgoing/store', 'LetterController@store')->name('incoming.store');
+    Route::prefix('letter')->as('letter.')->group(function(){
+        Route::get('{id}', 'LetterController@show')->name('show');
+        Route::delete('{id}', 'LetterController@remove')->name('delete');   
+    });
+
+    Route::prefix('outgoing')->as('outgoing.')->group(function(){
+        Route::get('/', 'LetterController@outgoing')->name('list');
+        Route::get('create', 'LetterController@create')->name('create');
+        Route::post('store', 'LetterController@store')->name('store');
+    });
+
     Route::get('/incoming', 'LetterController@incoming')->name('incoming');
-    Route::get('/classifications', 'ClassificationsController@show')->name('classifications');
-    Route::post('/classifications', 'ClassificationsController@store')->name('classifications.create');
-    Route::put('/classifications/{id}', 'ClassificationsController@update')->name('classifications.update');
-    Route::delete('/classifications/{id}', 'ClassificationsController@remove')->name('classifications.delete');
-});
 
-Route::post('/profile/update-photo', [ProfileController::class, 'updateProfilePhoto'])->name('profile.update.photo');
+    Route::prefix('classifications')->as('classifications.')->group(function(){
+        Route::get('/', 'ClassificationsController@show')->name('list');
+        Route::post('/', 'ClassificationsController@store')->name('create');
+        Route::put('{id}', 'ClassificationsController@update')->name('update');
+        Route::delete('{id}', 'ClassificationsController@remove')->name('delete');        
+    });
+    Route::prefix('users')->as('users.')->group(function(){
+        Route::get('/', 'UserController@index')->name('index');
+        Route::get('create', 'UserController@create')->name('create');
+        Route::get('{id}', 'UserController@show')->name('show');
+        Route::get('{user}/edit', 'UserController@edit')->name('edit');
+        Route::post('/', 'UserController@store')->name('store');
+        Route::put('{user}', 'UserController@update')->name('update');
+        Route::delete('{user}', 'UserController@destroy')->name('destroy');
+    });
 
-//users
-Route::middleware(['user'])->group(function () {
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::post('/profile/update-photo', ['UserController@updateProfilePhoto'])->name('profile.update.photo');
 });

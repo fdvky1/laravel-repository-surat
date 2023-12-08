@@ -69,7 +69,7 @@ class LetterController extends Controller
                 }
             }
             return redirect()
-                ->route('outgoing')
+                ->route('outgoing.list')
                 ->with('success', __('Success save Letter'));
         } catch (\Throwable $exception) {
             Log::info($exception->getMessage());

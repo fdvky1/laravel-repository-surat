@@ -35,10 +35,9 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{ route('incoming.store') }}" enctype="multipart/form-data" autocomplete="off">
+                    <form method="POST" action="{{ route('outgoing.store') }}" enctype="multipart/form-data" autocomplete="off">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="POST">
-                        <input type="hidden" name="type" value="incoming">
 
                         <h6 class="heading-small text-muted mb-4">Letter Information</h6>
 

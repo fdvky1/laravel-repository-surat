@@ -4,7 +4,7 @@
     <script>
         $(document).on('click', '.btn-edit', function () {
             const id = $(this).data('id');
-            $('#editModal form').attr('action', '{{ route('classifications') }}/' + id);
+            $('#editModal form').attr('action', '{{ route('classifications.list') }}/' + id);
             $('#editModal input:hidden#id').val(id);
             $('#editModal input#code').val($(this).data('code'));
             $('#editModal input#description').val($(this).data('description'));
