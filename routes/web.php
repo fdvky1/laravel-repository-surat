@@ -61,5 +61,5 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('{user}', 'UserController@destroy')->name('destroy');
     });
 
-    Route::post('/profile/update-photo', ['UserController@updateProfilePhoto'])->name('profile.update.photo');
+    Route::post('/profile/update-photo', 'ProfileController@updateProfilePhoto')->name('profile.update.photo');
 });
