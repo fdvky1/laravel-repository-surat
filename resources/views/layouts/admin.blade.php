@@ -35,7 +35,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">SB {{ Auth::user()->role }} <sup>2</sup></div>
         </a>
 
         <!-- Divider -->
@@ -272,11 +272,20 @@
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 ">{{ Auth::user()->name }}</span>
+                        <div class="d-flex flex-column">
+                            <span style="color: #000; font-size: 1rem;" class="mr-2 d-none d-lg-inline fw-bold fs-2">{{ Str::limit(Auth::user()->name, 20) }}</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 fs-6">{{ Auth::user()->role }}</span>
+                        </div>
+
                             @if (Auth::user()->profile_photo)
-                                <img src="{{ asset('storage/profiles/' . Auth::user()->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold" alt="">
+                            <div style="position: relative;">
+                               <img src="{{ asset('storage/profiles/' . Auth::user()->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold border border-success" alt="Profile Image">
+                               <span style="position: absolute; bottom: 2px; right: -7px; display: inline-block; width: 12px; height: 12px; background-color: green; border-radius: 50%; margin-right: 5px;"></span>
+                           </div>
                             @else
-                                <figure class="img-profile rounded-circle avatar font-weight-bold" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                            <figure class="img-fluid rounded-circle avatar font-weight-bold border border-success" data-initial="{{ Auth::user()->name[0] }}" style="position: relative;">
+                                <span style="position: absolute; bottom: 2px; right: -8px; display: inline-block; width: 12px; height: 12px; background-color: green; border-radius: 50%; margin-right: 5px;"></span>
+                            </figure>
                             @endif
                         </a>
                         <!-- Dropdown - User Information -->
@@ -286,14 +295,14 @@
                                 {{ __('Profile') }}
                             </a>
 
-                            <a class="dropdown-item" href="javascript:void(0)">
+                            <!-- <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Settings') }}
                             </a>
                             <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Activity Log') }}
-                            </a>
+                            </a> -->
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -322,7 +331,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Alejandro RH {{ now()->year }}</span>
+                    <span>Copyright &copy; {{ now()->year }}</span>
                 </div>
             </div>
         </footer>
