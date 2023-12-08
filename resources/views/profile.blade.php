@@ -1,5 +1,33 @@
 @extends('layouts.admin')
 
+@push('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profileImage = document.getElementById('profileImage');
+        const fileInput = document.getElementById('profile_photo');
+        const submitButton = document.getElementById('submitPhoto');
+
+        profileImage.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewImg = document.getElementById('preview_image')
+                    if(previewImg){
+                        previewImg.src = event.target.result;
+                    }
+                    document.getElementById('photoForm').submit();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+@endpush
 @section('main-content')
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Profile') }}</h1>
@@ -25,47 +53,37 @@
 
     <div class="row">
 
-        <div class="col-lg-4 order-lg-2">
+    <div class="col-lg-4 order-lg-2">
+    <div class="card shadow mb-4">
+        <div class="card-body">
 
-            <div class="card shadow mb-4">
-                <div class="card-profile-image mt-4">
+            <!-- Form for uploading photo (hidden) -->
+            <form action="{{ route('profile.update.photo') }}" method="POST" enctype="multipart/form-data" id="photoForm" class="d-none">
+                @csrf
+                <input type="file" id="profile_photo" name="profile_photo" class="d-none">
+                <button type="submit" id="submitPhoto" class="d-none">Upload</button>
+            </form>
+
+            <!-- Profile Image Display (clickable) -->
+            <div class="card-profile-image mt-4 mx-auto" id="profileImage" style="position: relative; width: 180px; height: 180px; overflow: hidden; border-radius: 50%;">
+                @if(Auth::user()->profile_photo != '')
+                    <img id="preview_image" src="{{ asset('storage/profiles/' . Auth::user()->profile_photo) }}" alt="Profile Photo" class="img-fluid rounded-circle font-weight-bold" style="object-fit: cover; width: 180px; height: 180px;">
+                @else
                     <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure>
-                </div>
-                <div class="card-body">
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="text-center">
-                                <h5 class="font-weight-bold">{{  Auth::user()->fullName }}</h5>
-                                <p>Administrator</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">22</span>
-                                <span class="description">Friends</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">10</span>
-                                <span class="description">Photos</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">89</span>
-                                <span class="description">Comments</span>
-                            </div>
-                        </div>
-                    </div>
+                @endif
+                <div style="position: absolute; bottom: 0; width: 100%; height: 30%; background-color: rgba(0, 0, 0, 0.5); ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#FFF" style="opacity: 0.8; margin-top: 9px;" height="25" width="25" viewBox="0 0 512 512" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/></svg>
                 </div>
             </div>
-
+            <!-- Profile details -->
+            <div class="text-center mt-4">
+                <h5 class="font-weight-bold">{{ Auth::user()->fullName }}</h5>
+                <p style="text-transform: capitalize;">{{ Auth::user()->role }}</p>
+            </div>
         </div>
+    </div>
+</div>
+
 
         <div class="col-lg-8 order-lg-1">
 

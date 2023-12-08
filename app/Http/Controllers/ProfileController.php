@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -17,6 +19,43 @@ class ProfileController extends Controller
     public function index()
     {
         return view('profile');
+    }
+
+    public function updateProfilePhoto(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'profile_photo' => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:5120', // Increased to 5MB (5 * 1024 = 5120 KB)
+                'dimensions:max_width=3000,max_height=3000',
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->hasFile('profile_photo')) {
+            $image = $request->file('profile_photo');
+
+            // Check if the uploaded file is unique (avoiding duplicates)
+            $existingPhoto = $user->profile_photo;
+            if ($existingPhoto && Storage::exists('public/profiles/' . $existingPhoto)) {
+                Storage::delete('public/profiles/' . $existingPhoto);
+            }
+
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/profiles', $imageName);
+
+            $user->profile_photo = $imageName;
+            $user->save();
+        }
+
+        return redirect()->back()->with('success', 'Profile photo updated successfully');
     }
 
     public function update(Request $request)

@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fstdropdown.min.css') }}" rel="stylesheet">
 
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.png') }}" rel="icon" type="image/png">
@@ -34,7 +35,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">SB {{ Auth::user()->role }} <sup>2</sup></div>
         </a>
 
         <!-- Divider -->
@@ -63,13 +64,44 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-envelope"></i>
+                <span>Letters</span>
+            </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('incoming') }}">Incoming</a>
+                    <a class="collapse-item" href="{{ route('outgoing.list') }}">Outgoing</a>
+                </div>
+            </div>
+        </li>
+
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
+        <li class="nav-item {{ Nav::isRoute('classifications.list') }}">
+            <a class="nav-link" href="{{ route('classifications.list') }}">
+                <i class="fas fa-fw fa-sort"></i>
+                <span>Classifications</span>
+            </a>
+        </li>
+        @endif
+
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
+        <li class="nav-item {{ Nav::isRoute('users') }} ">
+            <a class="nav-link" href="{{ route('users.index') }}">
+                <i class="fas fa-fw fa-user-group"></i>
+                <span>{{ __('Users') }}</span>
+            </a>
+        </li>
+        @endif
+
         <!-- Nav Item - About -->
-        <li class="nav-item {{ Nav::isRoute('about') }}">
+        <!-- <li class="nav-item {{ Nav::isRoute('about') }}">
             <a class="nav-link" href="{{ route('about') }}">
                 <i class="fas fa-fw fa-hands-helping"></i>
                 <span>{{ __('About') }}</span>
             </a>
-        </li>
+        </li> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
@@ -96,17 +128,20 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <!-- Topbar Search -->
+            @if(request()->is(['incoming', 'outgoing', 'classifications']))
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
+                            <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
                     </div>
                 </form>
+            @endif
+
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -132,14 +167,14 @@
                     </li>
 
                     <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    <!-- <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
+                            <i class="fas fa-bell fa-fw"></i> -->
                             <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
+                            <!-- <span class="badge badge-danger badge-counter">3+</span>
+                        </a> -->
                         <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                        <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                             <h6 class="dropdown-header">
                                 Alerts Center
                             </h6>
@@ -178,17 +213,17 @@
                             </a>
                             <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                         </div>
-                    </li>
+                    </li> -->
 
                     <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    <!-- <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
+                            <i class="fas fa-envelope fa-fw"></i> -->
                             <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
-                        </a>
+                            <!-- <span class="badge badge-danger badge-counter">7</span>
+                        </a> -->
                         <!-- Dropdown - Messages -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                        <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                             <h6 class="dropdown-header">
                                 Message Center
                             </h6>
@@ -236,13 +271,26 @@
                         </div>
                     </li>
 
-                    <div class="topbar-divider d-none d-sm-block"></div>
+                    <div class="topbar-divider d-none d-sm-block"></div> -->
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                            <figure class="img-profile rounded-circle avatar font-weight-bold" data-initial="{{ Auth::user()->name[0] }}"></figure>
+                        <div class="d-flex flex-column">
+                            <span style="color: #000; font-size: 1rem;" class="mr-2 d-none d-lg-inline fw-bold fs-2">{{ Str::limit(Auth::user()->name, 20) }}</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 fs-6">{{ Auth::user()->role }}</span>
+                        </div>
+
+                            @if (Auth::user()->profile_photo)
+                            <div style="position: relative;">
+                               <img src="{{ asset('storage/profiles/' . Auth::user()->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold border border-success" alt="Profile Image">
+                               <span style="position: absolute; bottom: 2px; right: -7px; display: inline-block; width: 12px; height: 12px; background-color: green; border-radius: 50%; margin-right: 5px;"></span>
+                           </div>
+                            @else
+                            <figure class="img-fluid rounded-circle avatar font-weight-bold border border-success" data-initial="{{ Auth::user()->name[0] }}" style="position: relative;">
+                                <span style="position: absolute; bottom: 2px; right: -8px; display: inline-block; width: 12px; height: 12px; background-color: green; border-radius: 50%; margin-right: 5px;"></span>
+                            </figure>
+                            @endif
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -250,14 +298,15 @@
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Profile') }}
                             </a>
-                            <a class="dropdown-item" href="javascript:void(0)">
+
+                            <!-- <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Settings') }}
                             </a>
                             <a class="dropdown-item" href="javascript:void(0)">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 {{ __('Activity Log') }}
-                            </a>
+                            </a> -->
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -286,7 +335,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Alejandro RH {{ now()->year }}</span>
+                    <span>Copyright &copy; {{ now()->year }}</span>
                 </div>
             </div>
         </footer>
@@ -326,8 +375,10 @@
 
 <!-- Scripts -->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<script src="{{ asset('js/fstdropdown.min.js') }}"></script>
+@stack('script')
 </body>
 </html>
