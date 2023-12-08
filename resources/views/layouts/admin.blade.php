@@ -77,19 +77,23 @@
             </div>
         </li>
 
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
         <li class="nav-item {{ Nav::isRoute('classifications.list') }}">
             <a class="nav-link" href="{{ route('classifications.list') }}">
                 <i class="fas fa-fw fa-sort"></i>
                 <span>Classifications</span>
             </a>
         </li>
+        @endif
 
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
         <li class="nav-item {{ Nav::isRoute('users') }} ">
             <a class="nav-link" href="{{ route('users.index') }}">
                 <i class="fas fa-fw fa-user-group"></i>
                 <span>{{ __('Users') }}</span>
             </a>
         </li>
+        @endif
 
         <!-- Nav Item - About -->
         <!-- <li class="nav-item {{ Nav::isRoute('about') }}">

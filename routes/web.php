@@ -45,13 +45,14 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/incoming', 'LetterController@incoming')->name('incoming');
 
-    Route::prefix('classifications')->as('classifications.')->group(function(){
+    Route::prefix('classifications')->middleware(['role:admin,superadmin'])->as('classifications.')->group(function(){
         Route::get('/', 'ClassificationsController@show')->name('list');
         Route::post('/', 'ClassificationsController@store')->name('create');
         Route::put('{id}', 'ClassificationsController@update')->name('update');
         Route::delete('{id}', 'ClassificationsController@remove')->name('delete');        
     });
-    Route::prefix('users')->as('users.')->group(function(){
+
+    Route::prefix('users')->middleware(['role:admin,superadmin'])->as('users.')->group(function(){
         Route::get('/', 'UserController@index')->name('index');
         Route::get('create', 'UserController@create')->name('create');
         Route::get('{id}', 'UserController@show')->name('show');
