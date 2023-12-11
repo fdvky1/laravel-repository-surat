@@ -119,10 +119,10 @@
                         <label for="password" class="form-label">Password:</label>
                         <input type="password" class="form-control" id="password" name="password" />
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="confirm_password" class="form-label">Confirm Password:</label>
                         <input type="password" class="form-control" id="confirm_password" name="password_confirmation" />
-                    </div>
+                    </div> -->
                     <div class="mb-3">
                         <label for="role" class="form-label">Role:</label>
                         <select id="role" class="form-control" name="role" required>
@@ -164,6 +164,10 @@
                     <div class="mb-3">
                         <label for="edit_email" class="form-label">Email:</label>
                         <input type="email" class="form-control" id="edit_email" name="email" value="{{ old('email', $user->email) }}" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password (optional):</label>
+                        <input type="password" class="form-control" id="password" name="password" "/>
                     </div>
                     <div class="mb-3">
                         <label for="edit_role" class="form-label">Role:</label>

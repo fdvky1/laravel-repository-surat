@@ -1,21 +1,4 @@
 @extends('layouts.admin')
-@push('script')
-    <script>
-        $(document).on('click', '.btn-edit', function () {
-
-            const id = $(this).data('id');
-
-            $('#editModal form').attr('action', '{{ route('users.update', '') }}/' + id);
-
-            $('#editModal input:hidden#id').val(id);
-
-            $('#editModal input#code').val($(this).data('code'));
-
-            $('#editModal input#description').val($(this).data('description'));
-
-        });
-    </script>
-@endpush
 @section('main-content')
 
 <div class="container">
@@ -34,7 +17,7 @@
                             @endif
                                 <!-- <h5 class="mb-0 mt-2">{{ $user->name }}</h5>
                                 <p class="text-muted">{{ $user->email }}</p> -->
-                                <div class="col-md-12 mt-2">
+                                <!-- <div class="col-md-12 mt-2">
                                     <div class="text-center">
                                         <button class="btn btn-info btn-sm btn-edit mr-2" data-target="#editModal">
                                             Edit
@@ -45,11 +28,11 @@
                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-md-8 mt-2 ">
                                 <div class="row mb-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <strong>User ID:</strong>
                                     </div>
                                     <div class="col-md-8">
