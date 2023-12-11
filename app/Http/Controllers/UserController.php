@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -25,50 +27,48 @@ class UserController extends Controller
         }
     }
 
-    public function create()
-    {
-        return view('users.create');
-    }
+    // public function create()
+    // {
+    //     return view('users.create');
+    // }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|min:8|confirmed|max:255',
-            'role' => 'required|in:user,admin,superadmin'
+        $validatedData = $request->validated();
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'last_name' => $validatedData['last_name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'role' => $validatedData['role'],
         ]);
-
-        $user = new User;
-        $user->name = $validatedData['name'];
-        $user->last_name = $validatedData['last_name'];
-        $user->email = $validatedData['email'];
-        $user->password = bcrypt($validatedData['password']);
-        $user->role = $validatedData['role'];
-
-        $user->save();
 
         return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
+    // public function edit(User $user)
+    // {
+    //     return view('users.edit', compact('user'));
+    // }
 
-    public function edit(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        return view('users.edit', compact('user'));
-    }
+        try {
+            $validatedData = $request->validated();
 
-    public function update(Request $request, User $user)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|in:user,admin,superadmin'
-        ]);
+            $user->update([
+                'name' => $validatedData['name'],
+                'last_name' => $validatedData['last_name'],
+                'email' => $validatedData['email'],
+                'role' => $validatedData['role'],
+            ]);
 
-        $user->update($validatedData);
+            return redirect()->route('users.index')->with('success', 'User updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('User update error: ' . $e->getMessage());
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+            return redirect()->route('users.index')->with('error', 'Failed to update user');
+        }
     }
 
     public function destroy(User $user)
