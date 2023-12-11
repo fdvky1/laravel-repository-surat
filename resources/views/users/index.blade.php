@@ -44,18 +44,18 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Created At</th>
+                        <!-- <th>Created At</th> -->
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                             <td>
                                 @if ($user->profile_photo)
                                     <img src="{{ asset('storage/profiles/' . $user->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold" alt="">
@@ -68,7 +68,7 @@
                             </td>
                             <td>{{ Str::limit($user->email, 20) }}</td>
                             <td>{{ Str::limit($user->role, 20) }}</td>
-                            <td>{{ $user->created_at }}</td>
+                            <!-- <td>{{ $user->created_at }}</td> -->
                             <td>
                             <button class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-last-name="{{ $user->last_name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
                                 Edit
