@@ -41,24 +41,24 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table table-striped">
+        <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th class="align-middle">No</th>
+                        <th class="align-middle">Name</th>
+                        <th class="align-middle">Email</th>
+                        <th class="align-middle">Role</th>
                         <!-- <th>Created At</th> -->
-                        <th>Actions</th>
+                        <th class="align-middle">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $user)
                         <tr>
-                        <td>{{ $loop->iteration }}</td>
-                            <td>
+                            <td class="align-middle">{{ $loop->iteration }}</td>
+                            <td class="align-middle">
                                 @if ($user->profile_photo)
-                                    <img src="{{ asset('storage/profiles/' . $user->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-bold" alt="">
+                                    <img src="{{ asset('storage/profiles/' . $user->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-boldk" alt="">
                                 @else
                                     <figure class="img-profile rounded-circle avatar font-weight-bold" data-initial="{{ $user->name[0] }}"></figure>
                                 @endif
@@ -66,13 +66,13 @@
                                     {{ Str::limit($user->name, 20) }} {{ Str::limit($user->last_name, 20) }}
                                 </a>
                             </td>
-                            <td>{{ Str::limit($user->email, 20) }}</td>
-                            <td>{{ Str::limit($user->role, 20) }}</td>
+                            <td class="align-middle">{{ Str::limit($user->email, 20) }}</td>
+                            <td class="align-middle">{{ Str::limit($user->role, 20) }}</td>
                             <!-- <td>{{ $user->created_at }}</td> -->
-                            <td>
-                            <button class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-last-name="{{ $user->last_name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
-                                Edit
-                            </button>
+                            <td class="align-middle">
+                                <button class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $user->id }}" data-name="{{ $user->name }}" data-last-name="{{ $user->last_name }}" data-email="{{ $user->email }}" data-role="{{ $user->role }}">
+                                    Edit
+                                </button>
                                 <form class="d-inline" action="{{ route('users.destroy', ['user' => $user->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                     @csrf
                                     @method('DELETE')
