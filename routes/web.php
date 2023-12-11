@@ -34,7 +34,7 @@ Route::get('/about', function () {
 Route::middleware(['auth'])->group(function(){
     Route::prefix('letter')->as('letter.')->group(function(){
         Route::get('{id}', 'LetterController@show')->name('show');
-        Route::delete('{id}', 'LetterController@remove')->name('delete');   
+        Route::delete('{id}', 'LetterController@remove')->name('delete');
     });
 
     Route::prefix('outgoing')->as('outgoing.')->group(function(){
@@ -49,14 +49,12 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/', 'ClassificationsController@show')->name('list');
         Route::post('/', 'ClassificationsController@store')->name('create');
         Route::put('{id}', 'ClassificationsController@update')->name('update');
-        Route::delete('{id}', 'ClassificationsController@remove')->name('delete');        
+        Route::delete('{id}', 'ClassificationsController@remove')->name('delete');
     });
 
     Route::prefix('users')->middleware(['role:admin,superadmin'])->as('users.')->group(function(){
         Route::get('/', 'UserController@index')->name('index');
-        Route::get('create', 'UserController@create')->name('create');
         Route::get('{id}', 'UserController@show')->name('show');
-        Route::get('{user}/edit', 'UserController@edit')->name('edit');
         Route::post('/', 'UserController@store')->name('store');
         Route::put('{user}', 'UserController@update')->name('update');
         Route::delete('{user}', 'UserController@destroy')->name('destroy');
