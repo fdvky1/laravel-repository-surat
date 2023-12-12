@@ -128,6 +128,7 @@
                         <select id="role" class="form-control" name="role" required>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
+                            <option value="reviewer">Reviewer</option>
                             <option value="superadmin">Super Admin</option>
                         </select>
                     </div>
@@ -174,6 +175,7 @@
                         <select id="edit_role" class="form-control" name="role" required>
                             <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>User</option>
                             <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="reviewer" {{ old('role', $user->role) === 'reviewer' ? 'selected' : '' }}>Reviewer</option>
                             <option value="superadmin" {{ old('role', $user->role) === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
                         </select>
                     </div>
@@ -187,6 +189,12 @@
     </div>
 </div>
 
+<!-- Pagination Section -->
+<div class="row">
+    <div class="col-md-12">
+        {{ $users->links() }}
+    </div>
+</div>
 
 @endsection
 
