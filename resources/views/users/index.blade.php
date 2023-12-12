@@ -55,7 +55,7 @@
                 <tbody>
                     @foreach($users as $user)
                         <tr>
-                            <td class="align-middle">{{ $loop->iteration }}</td>
+                        <td class="align-middle">{{ $loop->index + ($users->currentPage() - 1) * $users->perPage() + 1 }}</td>
                             <td class="align-middle">
                                 @if ($user->profile_photo)
                                     <img src="{{ asset('storage/profiles/' . $user->profile_photo) }}" class="img-fluid rounded-circle avatar font-weight-boldk" alt="">
