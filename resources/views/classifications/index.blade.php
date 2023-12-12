@@ -32,7 +32,7 @@
         </div>
     @endif
     <div class="w-100 d-flex justify-content-end mb-2">
-        <button data-toggle="modal" data-target="#createModal" class="btn btn-primary">New Classification</button>
+        <button data-toggle="modal" data-target="#createModal" class="btn btn-success">New Classification +</button>
     </div>
     <div class="card mb-5">
         <div class="table-responsive text-nowrap">
@@ -97,12 +97,11 @@
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="createModalTitle">Create Classification</h5>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
+                    <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path stroke="currentColor" stroke-width="2" d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -132,12 +131,11 @@
                 @method('PUT')
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalTitle">Edit Classification</h5>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
+                    <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path stroke="currentColor" stroke-width="2" d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id" id="id" value="">
