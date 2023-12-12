@@ -187,6 +187,12 @@
     </div>
 </div>
 
+<!-- Pagination Section -->
+<div class="row">
+    <div class="col-md-12">
+        {{ $users->links() }}
+    </div>
+</div>
 
 @endsection
 
