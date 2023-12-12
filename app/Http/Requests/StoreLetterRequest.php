@@ -24,11 +24,15 @@ class StoreLetterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'from' => ['nullable'],
-            'to' => ['required'],
-            'letter_number' => ['required', Rule::unique('letters')],
+            'from' => [Rule::requiredIf($this->type == 'incoming')],
+            'to' => [Rule::requiredIf($this->type == 'outgoing')],
+            'letter_number' => [Rule::requiredIf($this->type == 'incoming'), Rule::unique('letters')],
+            'letter_date' => [Rule::requiredIf($this->type == 'outgoing')],
+            'received_date' => [Rule::requiredIf($this->type == 'incoming')],
+            'content' => [Rule::requiredIf($this->type == 'outgoing')],
             'summary' => ['required'],
             'note' => ['nullable'],
+            'type' => ['required'],
             'classification_code' => ['required'],
         ];
     }

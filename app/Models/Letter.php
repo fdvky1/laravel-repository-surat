@@ -18,12 +18,16 @@ class Letter extends Model
      * @var string[]
      */
     protected $fillable = [
-        'letter_number',
-        'from',
         'to',
+        'from',
+        'type',
+        'created_by',
+        'letter_date',
         'received_date',
-        'summary',
+        'letter_number',
         'note',
+        'summary',
+        'content',
         'classification_code',
     ];
 
@@ -40,10 +44,35 @@ class Letter extends Model
         'formatted_received_date',
         'formatted_created_at',
         'formatted_updated_at',
+        'month',
+        'year'
     ];
 
+    public function getMonthAttribute(): string {
+        $month = Carbon::parse($this->letter_date)->format('n');
+        $map = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
+        return $map[$month];
+    }
+
+    public function getYearAttribute(): string {
+        return Carbon::parse($this->letter_date)->isoFormat('YYYY');
+    }
+
     public function getFormattedLetterDateAttribute(): string {
-        return Carbon::parse($this->created_at)->isoFormat('dddd, D MMMM YYYY');
+        return Carbon::parse($this->letter_date)->isoFormat('dddd, D MMMM YYYY');
     }
 
     public function getFormattedReceivedDateAttribute(): string {
@@ -58,21 +87,19 @@ class Letter extends Model
         return Carbon::parse($this->updated_at)->isoFormat('dddd, D MMMM YYYY, HH:mm:ss');
     }
 
-    public function scopeType($query, $type, $uid)
+    public function scopeType($query, $type)
     {
-        return $query->where(function($query) use ($type, $uid){
-            return $type == 'incoming' ? $query->where('to', $uid) : $query->where('from', $uid);
-        });
+        return $query->where('type', $type);
     }
 
-    public function scopeIncoming($query, $uid)
+    public function scopeIncoming($query)
     {
-        return $this->scopeType($query, 'incoming', $uid);
+        return $this->scopeType($query, 'incoming');
     }
 
-    public function scopeOutgoing($query, $uid)
+    public function scopeOutgoing($query)
     {
-        return $this->scopeType($query, 'outgoing', $uid);
+        return $this->scopeType($query, 'outgoing');
     }
 
     public function scopeToday($query)
@@ -89,7 +116,7 @@ class Letter extends Model
     {
         return $query->when($search, function($query, $find) {
             return $query
-                ->where('letter_number', $find)
+                ->where('summary', $find)
                 ->orWhere('from', 'LIKE', $find . '%')
                 ->orWhere('to', 'LIKE', $find . '%');
         });
@@ -98,7 +125,7 @@ class Letter extends Model
     public function scopeRender($query, $search)
     {
         return $query
-            ->with(['attachments', 'classification'])
+            ->with(['user', 'attachments', 'classification'])
             ->search($search)
             ->latest('created_at');
     }
@@ -106,17 +133,9 @@ class Letter extends Model
     /**
      * @return BelongsTo
      */
-    public function sender(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'from');
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function recipient(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'to');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
