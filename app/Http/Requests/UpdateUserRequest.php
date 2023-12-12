@@ -35,7 +35,7 @@ class UpdateUserRequest extends FormRequest
             Rule::unique('users')->ignore($userId),
             'max:255',
         ],
-        'role' => 'required|in:user,admin,superadmin',
+        'role' => 'required|in:user,reviewer,admin,superadmin',
         'password' => 'nullable|min:8|max:255',
     ];
     }
