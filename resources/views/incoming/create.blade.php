@@ -1,21 +1,8 @@
 @extends('layouts.admin')
 
-@push('script')
-<script src="https://cdn.tiny.cloud/1/y6wavuusx1p97c3is204dtbd5rujyn94wh8yh54sy0flklzf/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
-<script>
-  tinymce.init({
-    branding: false,
-    selector: 'textarea[name="content"]',
-    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-  });
-</script>
-@endpush
-
 @section('main-content')
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Create Outgoing Letter</h1>
+    <h1 class="h3 mb-4 text-gray-800">Create Incoming Letter</h1>
 
     @if (session('success'))
         <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
@@ -43,7 +30,7 @@
             <div class="card shadow mb-4">
 
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Outgoing Letter</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Incoming Letter</h6>
                 </div>
 
                 <div class="card-body">
@@ -51,12 +38,12 @@
                     <form method="POST" action="{{ route('letter.store') }}" enctype="multipart/form-data" autocomplete="off">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="POST">
-                        <input type="hidden" name="type" value="outgoing">
+                        <input type="hidden" name="type" value="incoming">
                         <h6 class="heading-small text-muted mb-4">Letter Information</h6>
 
                         <div class="pl-lg-4">
                             <div class="row">
-                                <div class="col-lg-4">
+                            <div class="col-lg-4">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="classification_code">Classification code<span class="small text-danger">*</span></label>
                                         <select class="fstdropdown-select" style="text-transform: capitalize;" id="classification_code" name="classification_code">
@@ -73,14 +60,28 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="letter_date">Letter date<span class="small text-danger">*</span></label>
-                                        <input type="date" id="letter_date" class="form-control" name="letter_date" value="{{ now()->toDateString() }}">
+                                        <label class="form-control-label" for="letter_number">Letter Number<span class="small text-danger">*</span></label>
+                                        <input type="text" id="letter_number" class="form-control" name="letter_number">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="to">To</label>
-                                        <input type="text" name="to" id="to" class="form-control">
+                                        <label class="form-control-label" for="from">From</label>
+                                        <input type="text" name="from" id="from" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="letter_date">Letter date<span class="small text-danger">*</span></label>
+                                        <input type="date" id="letter_date" class="form-control" name="letter_date">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="received_date">Received date<span class="small text-danger">*</span></label>
+                                        <input type="date" id="received_date" class="form-control" name="received_date" value="{{ now()->toDateString() }}">
                                     </div>
                                 </div>
                             </div>
@@ -91,17 +92,17 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-4">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="note">Note<span class="small text-danger"></span></label>
                                         <input type="text" id="note" class="form-control" name="note">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="form-group focused">
-                                    <label class="form-control-label" for="content">Content<span class="small text-danger"></span></label>
-                                    <textarea id="content" class="form-control" name="content"></textarea>
+                                <div class="col-lg-4">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="attachments">Attachment<span class="small text-danger">*</span></label>
+                                        <input type="file" id="attachments" class="form-control" name="attachments[]" multiple>
+                                    </div>
                                 </div>
                             </div>
                         </div>

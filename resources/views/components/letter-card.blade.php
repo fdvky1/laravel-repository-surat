@@ -3,9 +3,15 @@
     <div class="card-header pb-0">
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <div class="card-title">
-                <h5 class="text-nowrap mb-0 fw-bold">{{ $letter->letter_number }} | {{ $letter->classification?->code }}</h5>
+                <h5 class="text-nowrap mb-0 fw bold ">
+                    @if($type == 'incoming')
+                        {{ $letter->letter_number }}
+                    @else
+                    {{ $letter->status == 'published' ? $letter->letter_number : '-' }}/{{ $letter->classification_code }}/{{ $letter->month }}/{{ $letter->year }}
+                    @endif
+                </h5>
                 <small class="text-black">
-                    {{ $type == 'incoming' ? $letter->sender?->name : $letter->recipient?->name }}
+                    {{ $type == 'incoming' ? $letter->from : $letter->to }}
                 </small>
             </div>
             <div class="card-title d-flex flex-row">
@@ -60,21 +66,25 @@
         <p>{{ $letter->summary }}</p>
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <small class="text-secondary">{{ $letter->note }}</small>
-            @if(count($letter->attachments))
-                <div>
+            <div>
+                @if($type == 'incoming' && count($letter->attachments))
                     @foreach($letter->attachments as $attachment)
                         <a href="{{ $attachment->path_url }}" target="_blank">
                             @if($attachment->extension == 'pdf')
-                                <i class="bx fas fa-file-pdf display-6 cursor-pointer text-primary"></i>
+                                <i class="bx fa-xl fas fa-file-pdf display-6 cursor-pointer text-primary"></i>
                             @elseif(in_array($attachment->extension, ['jpg', 'jpeg']))
-                                <i class="bx fas fa-file-image display-6 cursor-pointer text-primary"></i>
+                                <i class="bx fa-xl fas fa-file-image display-6 cursor-pointer text-primary"></i>
                             @elseif($attachment->extension == 'png')
-                                <i class="bx far fa-file-image display-6 cursor-pointer text-primary"></i>
+                                <i class="bx fa-xl far fa-file-image display-6 cursor-pointer text-primary"></i>
                             @endif
                         </a>
                     @endforeach
-                </div>
-            @endif
+                @else
+                <a href="{{ route('outgoing.print', $letter->id) }}" target="_blank">
+                    <i class="bx fa-xl fas fa-file-pdf display-6 cursor-pointer text-primary"></i>
+                </a>
+                @endif
+            </div>
         </div>
         {{ $slot }}
     </div>

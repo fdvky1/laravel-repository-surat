@@ -33,17 +33,23 @@ Route::get('/about', function () {
 
 Route::middleware(['auth'])->group(function(){
     Route::prefix('letter')->as('letter.')->group(function(){
+        Route::post('store', 'LetterController@store')->name('store');
         Route::get('{id}', 'LetterController@show')->name('show');
         Route::delete('{id}', 'LetterController@remove')->name('delete');   
     });
 
     Route::prefix('outgoing')->as('outgoing.')->group(function(){
         Route::get('/', 'LetterController@outgoing')->name('list');
-        Route::get('create', 'LetterController@create')->name('create');
+        Route::get('print/{id}', 'LetterController@print')->name('print');
+        Route::get('create', 'LetterController@createOutgoing')->name('create');
         Route::post('store', 'LetterController@store')->name('store');
     });
 
-    Route::get('/incoming', 'LetterController@incoming')->name('incoming');
+    Route::prefix('incoming')->as('incoming.')->group(function(){
+        Route::get('/', 'LetterController@incoming')->name('list');
+        Route::get('create', 'LetterController@createIncoming')->name('create');
+    });
+
 
     Route::prefix('classifications')->middleware(['role:admin,superadmin'])->as('classifications.')->group(function(){
         Route::get('/', 'ClassificationsController@show')->name('list');

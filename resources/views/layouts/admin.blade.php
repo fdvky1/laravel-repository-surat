@@ -71,7 +71,7 @@
             </a>
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('incoming') }}">Incoming</a>
+                    <a class="collapse-item" href="{{ route('incoming.list') }}">Incoming</a>
                     <a class="collapse-item" href="{{ route('outgoing.list') }}">Outgoing</a>
                 </div>
             </div>
