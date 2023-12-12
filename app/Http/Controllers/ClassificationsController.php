@@ -23,7 +23,7 @@ class ClassificationsController extends Controller
     {
         try {
             Classification::create($request->validated());
-            return back()->with('success', 'success create classification letter');
+            return back()->with('success', 'Success create classification letter');
         } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }
@@ -33,7 +33,7 @@ class ClassificationsController extends Controller
     {
         try {
             Classification::find($id)->update($request->validated());
-            return back()->with('success', 'success update classification letter');
+            return back()->with('success', 'Success update classification letter');
         } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }
@@ -43,7 +43,7 @@ class ClassificationsController extends Controller
     {
         try {
             Classification::find($id)->delete();
-            return back()->with('success','success delete classification letter');
+            return back()->with('success','Success delete classification letter');
         } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }

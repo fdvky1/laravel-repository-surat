@@ -82,6 +82,16 @@
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot class="table-border-bottom-0">
+                <tr>
+                        <th class="align-middle">No</th>
+                        <th class="align-middle">Name</th>
+                        <th class="align-middle">Email</th>
+                        <th class="align-middle">Role</th>
+                        <!-- <th>Created At</th> -->
+                        <th class="align-middle">Actions</th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -95,12 +105,11 @@
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="createModalTitle">Create Users</h5>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
+                    <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path stroke="currentColor" stroke-width="2" d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -151,7 +160,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit User</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path stroke="currentColor" stroke-width="2" d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 0 1 .708.708L8.707 8l4.147 4.146a.5.5 0 0 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
