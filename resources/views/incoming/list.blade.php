@@ -6,10 +6,12 @@
         <a href="{{ route('incoming.create') }}" class="btn btn-primary">New Letter</a>
     </div>
     @foreach($data as $letter)
-        <x-letter-card
-            :letter="$letter"
-            :type="'incoming'"
-        />
+        <a href="{{ route('letter.show', $letter->id) }}">
+            <x-letter-card
+                :letter="$letter"
+                :type="'incoming'"
+            />
+        </a>
     @endforeach
 </div>
 @endsection

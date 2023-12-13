@@ -63,11 +63,16 @@
     </div>
     <div class="card-body">
         <hr>
-        <p>{{ $letter->summary }}</p>
+        <p>{{ $letter->regarding }}</p>
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <small class="text-secondary">{{ $letter->note }}</small>
             <div>
-                @if($type == 'incoming' && count($letter->attachments))
+                @if($type == 'outgoing')
+                    <a href="{{ route('outgoing.print', $letter->id) }}" target="_blank">
+                        <i class="bx fa-xl fas fa-file-pdf display-6 cursor-pointer text-primary"></i>
+                    </a>
+                @endif
+                @if(count($letter->attachments))
                     @foreach($letter->attachments as $attachment)
                         <a href="{{ $attachment->path_url }}" target="_blank">
                             @if($attachment->extension == 'pdf')
@@ -79,10 +84,6 @@
                             @endif
                         </a>
                     @endforeach
-                @else
-                <a href="{{ route('outgoing.print', $letter->id) }}" target="_blank">
-                    <i class="bx fa-xl fas fa-file-pdf display-6 cursor-pointer text-primary"></i>
-                </a>
                 @endif
             </div>
         </div>

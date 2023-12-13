@@ -26,7 +26,7 @@ class Letter extends Model
         'received_date',
         'letter_number',
         'note',
-        'summary',
+        'regarding',
         'content',
         'classification_code',
     ];
@@ -116,7 +116,7 @@ class Letter extends Model
     {
         return $query->when($search, function($query, $find) {
             return $query
-                ->where('summary', $find)
+                ->where('regarding', $find)
                 ->orWhere('from', 'LIKE', $find . '%')
                 ->orWhere('to', 'LIKE', $find . '%');
         });

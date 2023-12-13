@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamp('received_date')->nullable();
             $table->enum('type', ['incoming', 'outgoing']);
             $table->string('letter_number')->nullable();
-            $table->string('note')->default('');
-            $table->string('content')->default('');
-            $table->string('summary')->default('');
+            $table->longText('note')->nullable();
+            $table->longText('content')->nullable();
+            $table->longText('regarding')->nullable();
             $table->string('from')->nullable();
             $table->string('to')->nullable();
             $table->enum('status', ['pending', 'published', 'disposition'])->default('pending');

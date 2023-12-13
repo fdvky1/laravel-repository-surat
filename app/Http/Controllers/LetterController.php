@@ -27,7 +27,7 @@ class LetterController extends Controller
                 'data' => $letter,
             ]);
             $pdf->setPaper('A4', 'portrait');
-            return $pdf->download("$letter->summary.pdf");
+            return $pdf->download("$letter->regarding.pdf");
         } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }
@@ -73,9 +73,8 @@ class LetterController extends Controller
             $user = auth()->user();
             $newLetter = $request->validated();
             $newLetter['created_by'] = $user->id;
-            Log::info($newLetter);
             $letter = Letter::create($newLetter);
-            if ($request['type'] == 'incoming' && $request->hasFile('attachments')) {
+            if ($request->hasFile('attachments')) {
                 foreach ($request->attachments as $attachment) {
                     $extension = $attachment->getClientOriginalExtension();
                     if (!in_array($extension, ['png', 'jpg', 'jpeg', 'pdf'])) continue;

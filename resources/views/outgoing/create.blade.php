@@ -84,24 +84,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="">
+                            <div>
                                 <div class="form-group focused">
-                                    <label class="form-control-label" for="summary">Summary<span class="small text-danger"></span></label>
-                                    <textarea id="summary" class="form-control" name="summary"></textarea>
+                                    <label class="form-control-label" for="regarding">Regarding<span class="small text-danger"></span></label>
+                                    <textarea id="regarding" class="form-control" name="regarding"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group focused">
+                                    <label class="form-control-label" for="content">Content<span class="small text-danger"></span></label>
+                                    <textarea id="content" class="form-control" name="content"></textarea>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="note">Note<span class="small text-danger"></span></label>
                                         <input type="text" id="note" class="form-control" name="note">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="form-group focused">
-                                    <label class="form-control-label" for="content">Content<span class="small text-danger"></span></label>
-                                    <textarea id="content" class="form-control" name="content"></textarea>
+                                <div class="col-lg-4">
+                                    <div class="form-group focused">
+                                        <label class="form-control-label" for="attachments">Attachment<span class="small text-danger">*</span></label>
+                                        <input type="file" id="attachments" class="form-control" name="attachments[]" multiple>
+                                    </div>
                                 </div>
                             </div>
                         </div>

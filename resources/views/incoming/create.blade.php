@@ -87,8 +87,8 @@
                             </div>
                             <div class="">
                                 <div class="form-group focused">
-                                    <label class="form-control-label" for="summary">Summary<span class="small text-danger"></span></label>
-                                    <textarea id="summary" class="form-control" name="summary"></textarea>
+                                    <label class="form-control-label" for="regarding">Regarding<span class="small text-danger"></span></label>
+                                    <textarea id="regarding" class="form-control" name="regarding"></textarea>
                                 </div>
                             </div>
                             <div class="row">
