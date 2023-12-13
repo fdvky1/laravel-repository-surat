@@ -30,7 +30,7 @@ class StoreLetterRequest extends FormRequest
             'letter_date' => [Rule::requiredIf($this->type == 'outgoing')],
             'received_date' => [Rule::requiredIf($this->type == 'incoming')],
             'content' => [Rule::requiredIf($this->type == 'outgoing')],
-            'summary' => ['required'],
+            'regarding' => ['required'],
             'note' => ['nullable'],
             'type' => ['required'],
             'classification_code' => ['required'],
