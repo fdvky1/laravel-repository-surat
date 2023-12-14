@@ -24,39 +24,23 @@
                         <i class="fas fa-ellipsis-vertical fa-fw fa-lg"></i>
                     </a>
                     
-                    @if($type == 'incoming')
-                        <div class="dropdown-menu dropdown-menu-end"
-                             aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
-                            @if(!\Illuminate\Support\Facades\Route::is('*.show'))
-                                <a class="dropdown-item"
-                                   href="{{ route('letter.show', $letter->id) }}">View Details</a>
-                            @endif
+                    <div class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
+                        @if(!\Illuminate\Support\Facades\Route::is('*.show'))
+                            <a class="dropdown-item"
+                                href="{{ route('letter.show', $letter->id) }}">View Details</a>
+                        @endif
+                        @if($letter->created_by == Auth::user()->id)
                             <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
-                                  method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="dropdown-item cursor-pointer ">
-                                    <span>Delete</span>
-                                </button>
-                            </form>
-                        </div>
-                    @else
-                        <div class="dropdown-menu dropdown-menu-end"
-                             aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
-                            @if(!\Illuminate\Support\Facades\Route::is('*.show'))
-                                <a class="dropdown-item"
-                                   href="{{ route('letter.show', $letter->id) }}">View Details</a>
-                            @endif
-                            <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
-                                  method="post">
+                                    method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item cursor-pointer btn-delete">
                                     <span>Delete</span>
                                 </button>
                             </form>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
