@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLetterRequest;
+use App\Http\Requests\UpdateStatusRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Letter;
 use App\Models\Attachment;
 use App\Models\Classification;
+use App\Models\Notes;
+use App\Models\Dispositions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +25,11 @@ class LetterController extends Controller
     {
         try {
             $user = auth()->user();
-            $letter = Letter::where('status', 'published')->orWhere('created_by', $user->id)->outgoing()->find($id);
+            $letter = Letter::when($user->role == 'user', function($query) use ($user){
+                                return $query->where('status', 'published')->orWhere('created_by', $user->id);
+                            })
+                            ->outgoing()
+                            ->find($id);
             $pdf = PDF::loadView('outgoing.print', [
                 'data' => $letter,
             ]);
@@ -36,7 +43,12 @@ class LetterController extends Controller
     public function outgoing(Request $request): View
     {
         $user = auth()->user();
-        $letters = Letter::where('status', 'published')->orWhere('created_by', $user->id)->outgoing()->render($request->search)->get();
+        $letters = Letter::when($user->role == 'user', function($query) use ($user){
+                           return $query->where('status', 'published') ->orWhere('created_by', $user->id);
+                         })
+                         ->outgoing()
+                         ->render($request->search)
+                         ->get();
 
         return view('outgoing.list',[
             'data' => $letters,
@@ -46,7 +58,12 @@ class LetterController extends Controller
     public function incoming(Request $request): View
     {
         $user = auth()->user();
-        $letters = Letter::where('status', 'published')->orWhere('created_by', $user->id)->incoming()->render($request->search)->get();
+        $letters = Letter::when($user->role == 'user', function($query) use ($user){
+                           return  $query->where('status', 'published') ->orWhere('created_by', $user->id);
+                         })
+                         ->incoming()
+                         ->render($request->search)
+                         ->get();
 
         return view('incoming.list',[
             'data' => $letters,
@@ -65,6 +82,39 @@ class LetterController extends Controller
         return view('incoming.create', [
             'classifications' => Classification::all(),
         ]);
+    }
+
+    public function updateStatus(UpdateStatusRequest $request): RedirectResponse
+    {
+        try {
+            $req = $request->validated();
+            $user = auth()->user();
+            if ($req['status'] == 'disposition'){
+                Dispositions::where('letter_id', $req['letter_id'])->delete();
+                foreach ($request->selected_users as $u) {
+                    Dispositions::create([
+                        'user_id' => $u,
+                        'letter_id' => $req['letter_id']
+                    ]);
+                }
+            }
+            if($req['status'] != 'published' && $req['note'] && strlen($req['note']) > 0){
+                Notes::create([
+                    'user_id' => $user->id,
+                    'letter_id' => $req['letter_id'],
+                    'note' => $req['note']
+                ]);
+            }
+            Letter::where('id', $req['letter_id'])->update([
+                'status' => $req['status']
+            ]);
+            return back()
+                ->with('success', 'Success update status');
+        } catch (\Throwable $exception) {
+            // LOG::error($exception->getMessage());
+            return back()->with('error', $exception->getMessage());
+        }
+
     }
 
     public function store(StoreLetterRequest $request): RedirectResponse
@@ -93,7 +143,7 @@ class LetterController extends Controller
                 ->route($request['type'] == 'outgoing' ? 'outgoing.list' : 'incoming.list')
                 ->with('success', __('Success save Letter'));
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage());
+            // Log::error($exception->getMessage());
             return back()->with('error', $exception->getMessage());
         }
     }
@@ -101,9 +151,13 @@ class LetterController extends Controller
     public function show($id): View
     {
         $user = auth()->user();
-        $letter = Letter::find($id);
+        $letter = Letter::when($user->role == 'user', function($query) use ($user){
+                            return  $query->where('status', 'published') ->orWhere('created_by', $user->id);
+                        })
+                        ->find($id);
         return view('show', [
             'data' => $letter,
+            'users' => $user->role != 'user' && $letter->status != 'published' ? User::all() : []
         ]);
     }
 

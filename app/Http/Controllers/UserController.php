@@ -9,11 +9,11 @@ use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $users = User::search($request->search)->paginate(10);
 
-        return view('users.index', compact('users'));
+        return view('users.index', ['users' => $users]);
     }
 
     public function show($id)

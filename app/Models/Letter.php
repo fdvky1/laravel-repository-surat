@@ -125,7 +125,7 @@ class Letter extends Model
     public function scopeRender($query, $search)
     {
         return $query
-            ->with(['user', 'attachments', 'classification'])
+            ->with(['user', 'attachments', 'classification', 'notes', 'dispositions'])
             ->search($search)
             ->latest('created_at');
     }
@@ -152,5 +152,21 @@ class Letter extends Model
     public function attachments(): HasMany
     {
         return $this->hasMany(Attachment::class, 'letter_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Notes::class, 'letter_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function dispositions(): HasMany
+    {
+        return $this->hasMany(Dispositions::class, 'letter_id', 'id');
     }
 }

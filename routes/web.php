@@ -34,6 +34,7 @@ Route::get('/about', function () {
 Route::middleware(['auth'])->group(function(){
     Route::prefix('letter')->as('letter.')->group(function(){
         Route::post('store', 'LetterController@store')->name('store');
+        Route::post('status', 'LetterController@updateStatus')->name('status');
         Route::get('{id}', 'LetterController@show')->name('show');
         Route::delete('{id}', 'LetterController@remove')->name('delete');
     });

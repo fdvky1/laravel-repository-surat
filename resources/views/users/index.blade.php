@@ -154,7 +154,7 @@
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" data-backdrop="static" tabindex="-1">
     <div class="modal-dialog">
-        <form method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
+        <form method="POST" action="">
             @csrf
             @method('PUT')
             <div class="modal-content">
@@ -169,15 +169,15 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="edit_name" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="edit_name" name="name" value="{{ old('name', $user->name) }}" />
+                        <input type="text" class="form-control" id="edit_name" name="name" />
                     </div>
                     <div class="mb-3">
                         <label for="edit_last_name" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="edit_last_name" name="last_name" value="{{ old('last_name', $user->last_name) }}" />
+                        <input type="text" class="form-control" id="edit_last_name" name="last_name" />
                     </div>
                     <div class="mb-3">
                         <label for="edit_email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="edit_email" name="email" value="{{ old('email', $user->email) }}" />
+                        <input type="email" class="form-control" id="edit_email" name="email" />
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password (optional):</label>
@@ -186,10 +186,10 @@
                     <div class="mb-3">
                         <label for="edit_role" class="form-label">Role:</label>
                         <select id="edit_role" class="form-control" name="role" required>
-                            <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>User</option>
-                            <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="reviewer" {{ old('role', $user->role) === 'reviewer' ? 'selected' : '' }}>Reviewer</option>
-                            <option value="superadmin" {{ old('role', $user->role) === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
+                            <option value="user" >User</option>
+                            <option value="admin" >Admin</option>
+                            <option value="reviewer" >Reviewer</option>
+                            <option value="superadmin" >Super Admin</option>
                         </select>
                     </div>
                 </div>

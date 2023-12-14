@@ -23,7 +23,7 @@ return new class extends Migration
             $table->longText('regarding')->nullable();
             $table->string('from')->nullable();
             $table->string('to')->nullable();
-            $table->enum('status', ['pending', 'published', 'disposition'])->default('pending');
+            $table->enum('status', ['pending', 'published', 'disposition', 'require_revision', 'rejected'])->default('pending');
             $table->string('classification_code');
             $table->foreign('classification_code')->references('code')->on('classifications');
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
