@@ -38,6 +38,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function($query, $find) {
+            return $query
+                ->where('email', 'LIKE', $find . '%')
+                ->orWhere('name', 'LIKE', $find . '%')
+                ->orWhere('last_name', 'LIKE', $find . '%');
+        });
+    }
+
     /**
      * Get the user's full name.
      *
