@@ -1,4 +1,4 @@
-@props(['type'])
+@props(['type', 'disposition'])
 <div class="card mb-4 p-2">
     <div class="card-header pb-0">
         <div class="d-flex justify-content-between flex-column flex-sm-row">
@@ -28,7 +28,7 @@
                             aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
                         @if(!\Illuminate\Support\Facades\Route::is('*.show'))
                             <a class="dropdown-item"
-                                href="{{ route('letter.show', $letter->id) }}">View Details</a>
+                                href="{{ route(Route::is('dispositions.*') ? 'dispositions.show' : 'letter.show', $letter->id) }}">View Details</a>
                         @endif
                         @if($letter->created_by == Auth::user()->id)
                             <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"

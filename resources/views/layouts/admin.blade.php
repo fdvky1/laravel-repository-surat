@@ -64,6 +64,13 @@
             </a>
         </li>
 
+        <li class="nav-item {{ Nav::isRoute('dispositions.list') }}">
+            <a class="nav-link" href="{{ route('dispositions.list') }}">
+                <i class="fas fa-fw fa-sort"></i>
+                <span>Dispositions</span>
+            </a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-envelope"></i>
