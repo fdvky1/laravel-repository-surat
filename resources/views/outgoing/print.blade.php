@@ -28,11 +28,13 @@
                             <td>:</td>
                             <td>{{ $data->status == 'published' ? $data->letter_number : '-' }}/{{ $data->classification_code }}/{{ $data->month }}/{{ $data->year }}</td>
                         </tr>
+                        @if(count($data->attachments))
                         <tr>
                             <td>Lampiran</td>
                             <td>:</td>
-                            <td>1</td>
+                            <td>{{count($data->attachments)}} Lampiran</td>
                         </tr>
+                        @endif
                         <tr>
                             <td>Perihal</td>
                             <td>:</td>
