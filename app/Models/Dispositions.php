@@ -21,6 +21,14 @@ class Dispositions extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function letter(): BelongsTo
+    {
+        return $this->belongsTo(Letter::class, 'letter_id', 'id');
     }
 }
