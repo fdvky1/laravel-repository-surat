@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLetterRequest;
+use App\Http\Requests\UpdateLetterRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -77,12 +78,33 @@ class LetterController extends Controller
         ]);
     }
 
+    public function editOutgoing($id): View
+    {
+        $letter = Letter::findOrFail($id);
+
+        return view('outgoing.edit', [
+            'letter' => $letter,
+            'classifications' => Classification::all(),
+        ]);
+    }
+
     public function createIncoming(): View
     {
         return view('incoming.create', [
             'classifications' => Classification::all(),
         ]);
     }
+
+    public function updateIncoming($id): View
+    {
+        $letter = Letter::findOrFail($id);
+
+        return view('incoming.edit', [
+            'letter' => $letter,
+            'classifications' => Classification::all()
+        ]);
+    }
+
 
     public function updateStatus(UpdateStatusRequest $request): RedirectResponse
     {
@@ -149,6 +171,41 @@ class LetterController extends Controller
                 ->with('success', __('Success save Letter'));
         } catch (\Throwable $exception) {
             // Log::error($exception->getMessage());
+            return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function update(UpdateLetterRequest $request, $id): RedirectResponse
+    {
+        try {
+            $user = auth()->user();
+            $letter = Letter::findOrFail($id);
+
+            $updatedLetter = $request->validated();
+            $updatedLetter['created_by'] = $user->id;
+
+            $letter->update($updatedLetter);
+
+            if ($request->hasFile('attachments')) {
+                foreach ($request->attachments as $attachment) {
+                    $extension = $attachment->getClientOriginalExtension();
+                    if (!in_array($extension, ['png', 'jpg', 'jpeg', 'pdf'])) continue;
+                    $filename = time() . '-' . $attachment->getClientOriginalName();
+                    $filename = str_replace(' ', '-', $filename);
+                    $attachment->storeAs('public/attachments', $filename);
+                    Attachment::create([
+                        'filename' => $filename,
+                        'extension' => $extension,
+                        'user_id' => $user->id,
+                        'letter_id' => $letter->id,
+                    ]);
+                }
+            }
+
+            return redirect()
+                ->route($request['type'] == 'outgoing' ? 'outgoing.list' : 'incoming.list')
+                ->with('success', __('Success update Letter'));
+        } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }
     }
