@@ -9,11 +9,13 @@
 
     status.onchange = (e) => {
         note.classList[e.target.value == '' ? 'add' : 'remove']("d-none");
-        node.required = e.target.value == 'require_revision';
+        note.required = e.target.value == 'require_revision';
         btnSubmit.disabled = e.target.value == '';
     }
 </script>
 @endpush
+
+@section('main-content')
 
 @if (session('success'))
     <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
@@ -33,8 +35,6 @@
         </ul>
     </div>
 @endif
-
-@section('main-content')
 
     <x-letter-card :letter="$data" :type="$data->type">
         <div class="mt-2">

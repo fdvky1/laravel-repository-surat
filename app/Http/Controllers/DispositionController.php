@@ -41,7 +41,7 @@ class DispositionController extends Controller
                 if(Dispositions::where('status', 'accept')->where('letter_id', $req['letter_id'])->count() == Dispositions::where('letter_id', $req['letter_id'])->count())
                 {
                     Letter::where('type', 'outgoing')->where('id', $req['letter_id'])->update([
-                        'letter_number' => (Letter::where('status', 'published')->count() + 1)
+                        'letter_number' => (Letter::where('type', 'outgoing')->where('status', 'published')->count() + 1)
                     ]);
                     Letter::where('id', $req['letter_id'])->update([
                         'status' => 'published',

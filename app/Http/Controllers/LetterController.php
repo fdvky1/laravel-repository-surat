@@ -105,6 +105,11 @@ class LetterController extends Controller
                     'note' => $req['note']
                 ]);
             }
+            if ($req['status'] == 'published'){
+                Letter::where('type', 'outgoing')->where('id', $req['letter_id'])->update([
+                    'letter_number' => (Letter::where('type', 'outgoing')->where('status', 'published')->count() + 1)
+                ]);
+            }
             Letter::where('id', $req['letter_id'])->update([
                 'status' => $req['status']
             ]);
