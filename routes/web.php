@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +15,12 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login'); //view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
