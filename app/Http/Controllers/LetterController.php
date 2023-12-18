@@ -17,6 +17,7 @@ use App\Models\Dispositions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 
@@ -209,8 +210,17 @@ class LetterController extends Controller
                 }
             }
 
+            foreach ($request->delete_files as $fileId) {
+                $attachment = Attachment::where('user_id', $user->id)->find($fileId);
+                if($attachment)
+                {
+                    Storage::delete("public/attachments/{$attachment->filename}");
+                    $attachment->delete();
+                }
+            }
+
             return redirect()
-                ->route($request['type'] == 'outgoing' ? 'outgoing.list' : 'incoming.list')
+                ->back()
                 ->with('success', __('Success update Letter'));
         } catch (\Throwable $exception) {
             return back()->withErrors($exception->getMessage());

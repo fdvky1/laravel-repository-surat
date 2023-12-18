@@ -1,5 +1,14 @@
 @extends('layouts.admin')
 
+@push('script')
+<script>
+    function removeAttachment(id){
+        document.getElementById(id).remove();
+        document.querySelector("#form-update").insertAdjacentHTML('beforeend', `<input type="hidden" name="delete_files[]" value="${id}">`);
+    }
+</script>
+@endpush
+
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">Edit Incoming Letter</h1>
 
@@ -29,7 +38,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Edit Incoming Letter</h6>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('letter.update', $letter->id) }}" enctype="multipart/form-data" autocomplete="off">
+                    <form id="form-update" method="POST" action="{{ route('letter.update', $letter->id) }}" enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="type" value="incoming">
@@ -84,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-8">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="note">Note</label>
                                         <input type="text" id="note" class="form-control" name="note" value="{{ $letter->note }}">
@@ -94,31 +103,37 @@
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="attachments">Attachment</label>
                                         <input type="file" id="attachments" class="form-control" name="attachments[]" multiple>
-
-                                        @if ($letter->attachments->count() > 0)
-                                            <div class="mt-3">
-                                                <p>Existing Attachments:</p>
-                                                <ul>
-                                                    @foreach($letter->attachments as $attachment)
-                                                        @if (strpos($attachment->mime_type, 'image') !== false)
-                                                            <li>
-                                                                <a href="{{ asset('storage/attachments/' . $attachment->filename) }}" target="_blank">
-                                                                    <img src="{{ asset('storage/attachments/' . $attachment->filename) }}" alt="{{ $attachment->filename }}" style="max-width: 100px; max-height: 100px;">
-                                                                </a>
-                                                            </li>
-                                                        @else
-                                                            <li>
-                                                                <a href="{{ asset('storage/attachments/' . $attachment->filename) }}" target="_blank">
-                                                                    {{ $attachment->filename }}
-                                                                </a>
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
+                                @if ($letter->attachments->count() > 0)
+                                <div class="col lg-12">
+                                    <div class="mt-3">
+                                        <p class="mb-1">Existing Attachments:</p>
+                                        <ul style="list-style: none; padding-left: 0px;">
+                                            @foreach($letter->attachments as $attachment)
+                                            <li id="{{ $attachment->id }}">
+                                                <div class="d-flex align-items-center" style="gap: 0.25rem;">
+                                                    <button class="btn btn-danger" type="button" onclick="removeAttachment('{{ $attachment->id }}')">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                    <div>
+                                                        @if (strpos($attachment->mime_type, 'image') !== false)
+                                                            <a href="{{ asset('storage/attachments/' . $attachment->filename) }}" target="_blank">
+                                                                <img src="{{ asset('storage/attachments/' . $attachment->filename) }}" alt="{{ $attachment->filename }}" style="max-width: 100px; max-height: 100px;">
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ asset('storage/attachments/' . $attachment->filename) }}" target="_blank">
+                                                                {{ $attachment->filename }}
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
 
