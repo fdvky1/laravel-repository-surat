@@ -13,7 +13,7 @@ class CreateHeaderInfoTable extends Migration
             $table->string('header');
             $table->string('subheader');
             $table->text('address');
-            $table->string('signature'); // Sepuh (tanda tangan)
+            $table->string('signature');
             $table->timestamps();
         });
     }

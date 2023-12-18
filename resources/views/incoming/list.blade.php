@@ -11,6 +11,10 @@
                 :letter="$letter"
                 :type="'incoming'"
             />
+            <a class="dropdown-item"
+                href="{{ route('incoming.edit', $letter->id)}}">
+                Edit
+            </a>
         </a>
     @endforeach
 </div>

@@ -48,7 +48,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::prefix('incoming')->as('incoming.')->group(function(){
         Route::get('/', 'LetterController@incoming')->name('list');
-        Route::get('create', 'LetterController@createIncoming')->name('create');
+        Route::post('create', 'LetterController@createIncoming')->name('create');
+        Route::put('{id}', 'LetterController@editIncoming')->name('incoming.edit');
     });
 
 

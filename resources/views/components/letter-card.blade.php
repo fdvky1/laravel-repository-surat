@@ -23,15 +23,18 @@
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="dropdown-{{ $type }}-{{ $letter->id }}" aria-haspopup="true" aria-expanded="true">
                         <i class="fas fa-ellipsis-vertical fa-fw fa-lg"></i>
                     </a>
-                    
+
                     <div class="dropdown-menu dropdown-menu-end"
                             aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
+
                         @if(!\Illuminate\Support\Facades\Route::is('*.show'))
                             <a class="dropdown-item"
                                 href="{{ route('letter.show', $letter->id) }}">View Details</a>
                         @endif
                         @if($letter->created_by == Auth::user()->id)
-                            <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
+                        <a class="dropdown-item"
+                                href="{{ route('incoming.edit', $letter->id)}}">Edit</a>
+                        <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
                                     method="post">
                                 @csrf
                                 @method('DELETE')
