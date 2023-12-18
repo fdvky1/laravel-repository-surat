@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\StoreLetterRequest;
 use App\Http\Requests\UpdateLetterRequest;
 use App\Http\Requests\UpdateStatusRequest;
@@ -37,7 +38,7 @@ class LetterController extends Controller
             $pdf->setPaper('A4', 'portrait');
             return $pdf->download("$letter->regarding.pdf");
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 
@@ -139,7 +140,7 @@ class LetterController extends Controller
                 ->with('success', 'Success update status');
         } catch (\Throwable $exception) {
             // LOG::error($exception->getMessage());
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
 
     }
@@ -171,7 +172,7 @@ class LetterController extends Controller
                 ->with('success', __('Success save Letter'));
         } catch (\Throwable $exception) {
             // Log::error($exception->getMessage());
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 
@@ -181,8 +182,14 @@ class LetterController extends Controller
             $user = auth()->user();
             $letter = Letter::findOrFail($id);
 
+            if($request->letter_number != $letter->letter_number)
+            {
+                $request->validate([
+                    'letter_number' => [Rule::unique('letters')]
+                ]);
+            }
+
             $updatedLetter = $request->validated();
-            $updatedLetter['created_by'] = $user->id;
 
             $letter->update($updatedLetter);
 
@@ -206,7 +213,7 @@ class LetterController extends Controller
                 ->route($request['type'] == 'outgoing' ? 'outgoing.list' : 'incoming.list')
                 ->with('success', __('Success update Letter'));
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 
@@ -231,7 +238,7 @@ class LetterController extends Controller
             return back()
                 ->with('success', 'Success delete Letter');
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 

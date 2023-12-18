@@ -17,7 +17,7 @@ class UpdateLetterRequest extends FormRequest
         return [
             'from' => [Rule::requiredIf($this->type == 'incoming')],
             'to' => [Rule::requiredIf($this->type == 'outgoing')],
-            'letter_number' => [Rule::requiredIf($this->type == 'incoming'), Rule::unique('letters')->ignore($this->route('letter'), 'id')],
+            'letter_number' => [Rule::requiredIf($this->type == 'incoming')],
             'letter_date' => [Rule::requiredIf($this->type == 'outgoing')],
             'received_date' => [Rule::requiredIf($this->type == 'incoming')],
             'content' => [Rule::requiredIf($this->type == 'outgoing')],
