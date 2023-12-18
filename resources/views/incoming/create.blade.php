@@ -46,7 +46,7 @@
                             <div class="col-lg-4">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="classification_code">Classification code<span class="small text-danger">*</span></label>
-                                        <select class="fstdropdown-select" style="text-transform: capitalize;" id="classification_code" name="classification_code">
+                                        <select class="fstdropdown-select" style="text-transform: capitalize;" id="classification_code" name="classification_code" required>
                                             <option value="">Select</option>
                                             @foreach($classifications as $classification)
                                                 <option
@@ -61,13 +61,13 @@
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="letter_number">Letter Number<span class="small text-danger">*</span></label>
-                                        <input type="text" id="letter_number" class="form-control" name="letter_number">
+                                        <input type="text" id="letter_number" class="form-control" name="letter_number" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="from">From</label>
-                                        <input type="text" name="from" id="from" class="form-control">
+                                        <label class="form-control-label" for="from">From<span class="small text-danger">*</span></label>
+                                        <input type="text" name="from" id="from" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -75,33 +75,33 @@
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="letter_date">Letter date<span class="small text-danger">*</span></label>
-                                        <input type="date" id="letter_date" class="form-control" name="letter_date">
+                                        <input type="date" id="letter_date" class="form-control" name="letter_date" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="received_date">Received date<span class="small text-danger">*</span></label>
-                                        <input type="date" id="received_date" class="form-control" name="received_date" value="{{ now()->toDateString() }}">
+                                        <input type="date" id="received_date" class="form-control" name="received_date" value="{{ now()->toDateString() }}" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="">
                                 <div class="form-group focused">
-                                    <label class="form-control-label" for="regarding">Regarding<span class="small text-danger"></span></label>
-                                    <textarea id="regarding" class="form-control" name="regarding"></textarea>
+                                    <label class="form-control-label" for="regarding">Regarding<span class="small text-danger">*</span></label>
+                                    <textarea id="regarding" class="form-control" name="regarding" required></textarea>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
-                                        <label class="form-control-label" for="note">Note<span class="small text-danger"></span></label>
+                                        <label class="form-control-label" for="note">Note</label>
                                         <input type="text" id="note" class="form-control" name="note">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group focused">
                                         <label class="form-control-label" for="attachments">Attachment<span class="small text-danger">*</span></label>
-                                        <input type="file" id="attachments" class="form-control" name="attachments[]" multiple>
+                                        <input type="file" id="attachments" class="form-control" name="attachments[]" multiple required>
                                     </div>
                                 </div>
                             </div>
