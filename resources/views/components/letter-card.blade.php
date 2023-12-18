@@ -20,13 +20,15 @@
                     {{ $letter->formatted_letter_date }}
                 </div>
                 <div class="dropdown d-inline-block">
+                    @if(!Route::is('*.show') || $letter->created_by == Auth::user()->id)
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="dropdown-{{ $type }}-{{ $letter->id }}" aria-haspopup="true" aria-expanded="true">
                         <i class="fas fa-ellipsis-vertical fa-fw fa-lg"></i>
                     </a>
+                    @endif
 
                     <div class="dropdown-menu dropdown-menu-end"
                             aria-labelledby="dropdown-{{ $type }}-{{ $letter->id }}">
-                        @if(!\Illuminate\Support\Facades\Route::is('*.show'))
+                        @if(!Route::is('*.show'))
                             <a class="dropdown-item"
                                 href="{{ route(Route::is('dispositions.*') ? 'dispositions.show' : 'letter.show', $letter->id) }}">View Details</a>
                         @endif
