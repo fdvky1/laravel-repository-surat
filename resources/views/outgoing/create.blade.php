@@ -93,7 +93,7 @@
                             <div>
                                 <div class="form-group focused">
                                     <label class="form-control-label" for="content">Content<span class="small text-danger">*</span></label>
-                                    <textarea id="content" class="form-control" name="content" required></textarea>
+                                    <textarea id="content" class="form-control" name="content"></textarea>
                                 </div>
                             </div>
                             <div class="row">
