@@ -33,4 +33,6 @@ jobs:
     #   run: php artisan key:generate
 
     - name: Run Migrations
-      run: php artisan migrate --force
+      run: |
+        php artisan migrate --force
+        php artisan db:seed
