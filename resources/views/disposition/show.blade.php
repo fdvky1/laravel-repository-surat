@@ -1,45 +1,40 @@
 @extends('layouts.admin')
-@if(Auth::user()->role != 'user')
 @push('script')
 <script>
     const status = document.querySelector('[name="status"]');
-    status.value = "{{ $data-> status }}"
+    status.value = "{{ $disposition->status == 'pending' ? '' : $disposition->status }}"
     const note = document.querySelector('[name="note"]');
     const btnSubmit = document.querySelector('#btn-submit');
-    const selectUser = document.querySelector('select[id="user"]');
     let users = [];
 
     status.onchange = (e) => {
-        if(selectUser){
-            document.querySelector('#select-container').classList[e.target.value == 'disposition' ? 'remove': 'add']('d-none');
-        }
-        note.classList[e.target.value == 'published' ? 'add' : 'remove']("d-none");
+        note.classList[e.target.value == '' ? 'add' : 'remove']("d-none");
+        note.required = e.target.value == 'require_revision';
         btnSubmit.disabled = e.target.value == '';
-    }
-
-    if(selectUser){
-        selectUser.onchange = (e) => {
-            const [id, name] = e.target.value.split("|");
-            if(users.length > 0 && users.find(v => v.id === id)) return;
-            e.target.value = '';
-            users.push({
-                id,
-                name
-            })
-            document.querySelector('#badge-container').insertAdjacentHTML('beforeend', `<input type="hidden" name="selected_users[]" id="in-user-${id}" value="${id}"><span id="user-${id}" class="badge badge-primary mx-1" style="padding: 0.5rem;">${name} <button class="btn btn-none text-light" style="padding: 0px;" type="button" onClick="deleteSelectedUser('${id}')">x</button></span>`);
-        }
-    }
-
-    function deleteSelectedUser(id){
-        users = users.filter(v => v.id != id);
-        document.querySelector(`#user-${id}`).remove();
-        document.querySelector(`#in-user-${id}`).remove();
     }
 </script>
 @endpush
-@endif
 
 @section('main-content')
+
+@if (session('success'))
+    <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger border-left-danger" role="alert">
+        <ul class="pl-4 my-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     <x-letter-card :letter="$data" :type="$data->type">
         <div class="mt-2">
@@ -108,45 +103,26 @@
             </div>
             @endif
         </div>
-        @if(Auth::user()->role != 'user')
         <div>
-            <form method="POST" action="{{ route('letter.status') }}">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="_method" value="POST">
-                <input type="hidden" name="letter_id" value="{{ $data->id }}">
+            <form method="POST" action="{{ route('dispositions.update', $disposition->id) }}">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="letter_id" value="{{$data->id}}">
                 <div class="form-group focused">
-                    <label class="form-control-label" for="status">Change Status</label>
+                    <label class="form-control-label" for="status">Select Action</label>
                     <div class="d-sm-flex" style="gap: 0.5rem;">
-                        <select class="form-control mb-1" name="status" style="max-width: 10rem;" id="status" @if(in_array($data->status,['published', 'rejected', 'disposition'])) {{'disabled'}} @endif>
-                            <option value="">Select Status</option>
-                            <option value="published">Publish</option>
+                        <select class="form-control mb-1" name="status" style="max-width: 10rem;" id="status" @if($disposition->status != 'pending') {{'disabled'}} @endif>
+                            <option value="">Select</option>
+                            <option value="accept">Approve</option>
                             <option value="require_revision">Require Revision</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="disposition">Disposition</option>
+                            <option value="rejected">Reject</option>
                         </select>
-                        @if(count($users))
-                        <div class="d-none mb-1" style="min-width: 15rem;" id="select-container">
-                            <select class="fstdropdown-select" style="text-transform: capitalize;" id="user">
-                                <option value="">Select User</option>
-                                @foreach($users as $user)
-                                    <option
-                                        value="{{ $user->id }}|{{ $user->fullname }}"
-                                        @selected(old('id') == $user->id)>
-                                        {{ $user->fullname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @endif
                         <input type="text" name="note" id="note" class="form-control d-none mb-1" style="max-width: 13rem;" placeholder="Note">
                         <button type="submit" class="btn btn-primary" id="btn-submit" disabled>save</button>
                     </div>
                 </div>
-                <div id="badge-container">
-                </div>
             </form>
         </div>
-        @endif
     </x-letter-card>
 
 @endsection

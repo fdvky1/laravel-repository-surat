@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Letter;
+use App\Models\Dispositions;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,10 +27,17 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $users = User::count();
+        $incoming = Letter::incoming()->where('status', 'published')->whereMonth('created_at', date('m'))->count();
+        $outgoing = Letter::outgoing()->where('status', 'published')->whereMonth('created_at', date('m'))->count();
+        $dispositions = Dispositions::where('user_id', $user->id)->where('status', 'pending')->count();
 
         $widget = [
             'users' => $users,
+            'incoming' => $incoming,
+            'outgoing' => $outgoing,
+            'dispositions' => $dispositions
             //...
         ];
 

@@ -31,12 +31,12 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center" href="/home">
             <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">SB {{ Auth::user()->role }} <sup>2</sup></div>
-        </a>
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-2">{{ Auth::user()->role }}</div>
+            </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -64,6 +64,22 @@
             </a>
         </li>
 
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('setting.show') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Setting</span>
+            </a>
+        </li>
+        @endif
+
+        <li class="nav-item {{ Nav::isRoute('dispositions.list') }}">
+            <a class="nav-link" href="{{ route('dispositions.list') }}">
+                <i class="fas fa-fw fa-sort"></i>
+                <span>Dispositions</span>
+            </a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-envelope"></i>
@@ -71,7 +87,7 @@
             </a>
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('incoming') }}">Incoming</a>
+                    <a class="collapse-item" href="{{ route('incoming.list') }}">Incoming</a>
                     <a class="collapse-item" href="{{ route('outgoing.list') }}">Outgoing</a>
                 </div>
             </div>
@@ -129,7 +145,7 @@
                 </button>
 
             <!-- Topbar Search -->
-            @if(request()->is(['incoming', 'outgoing', 'classifications']))
+            @if(request()->is(['incoming', 'outgoing', 'classifications', 'users']))
                 <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="GET">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">

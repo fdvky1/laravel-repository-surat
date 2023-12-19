@@ -5,28 +5,19 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-
-class StoreLetterRequest extends FormRequest
+class UpdateLetterRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules()
     {
         return [
             'from' => [Rule::requiredIf($this->type == 'incoming')],
             'to' => [Rule::requiredIf($this->type == 'outgoing')],
-            'letter_number' => [Rule::requiredIf($this->type == 'incoming'), Rule::unique('letters')],
+            'letter_number' => [Rule::requiredIf($this->type == 'incoming')],
             'letter_date' => [Rule::requiredIf($this->type == 'outgoing')],
             'received_date' => [Rule::requiredIf($this->type == 'incoming')],
             'content' => [Rule::requiredIf($this->type == 'outgoing')],
