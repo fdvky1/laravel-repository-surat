@@ -78,5 +78,11 @@ Route::middleware(['auth'])->group(function(){
         Route::delete('{user}', 'UserController@destroy')->name('destroy');
     });
 
+    Route::prefix('setting')->middleware(['role:admin,superadmin'])->as('setting.')->group(function(){
+        Route::get('/', 'SettingController@show')->name('show');
+        Route::put('/', 'SettingController@update')->name('update');
+        Route::post('update-photo', 'SettingController@updatePhoto')->name('update_photo');
+    });
+
     Route::post('/profile/update-photo', 'ProfileController@updateProfilePhoto')->name('profile.update.photo');
 });

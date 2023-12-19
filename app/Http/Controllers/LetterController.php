@@ -13,6 +13,7 @@ use App\Models\Letter;
 use App\Models\Attachment;
 use App\Models\Classification;
 use App\Models\Notes;
+use App\Models\Setting;
 use App\Models\Dispositions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -35,6 +36,7 @@ class LetterController extends Controller
                             ->find($id);
             $pdf = PDF::loadView('outgoing.print', [
                 'data' => $letter,
+                'config' => Setting::find(1)
             ]);
             $pdf->setPaper('A4', 'portrait');
             return $pdf->download("$letter->regarding.pdf");
