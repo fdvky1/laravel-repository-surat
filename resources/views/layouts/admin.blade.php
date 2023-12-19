@@ -64,6 +64,15 @@
             </a>
         </li>
 
+        @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('setting.show') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Setting</span>
+            </a>
+        </li>
+        @endif
+
         <li class="nav-item {{ Nav::isRoute('dispositions.list') }}">
             <a class="nav-link" href="{{ route('dispositions.list') }}">
                 <i class="fas fa-fw fa-sort"></i>
