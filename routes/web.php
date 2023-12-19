@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function(){
         Route::post('status', 'LetterController@updateStatus')->name('status');
         Route::get('{id}', 'LetterController@show')->name('show');
         Route::delete('{id}', 'LetterController@remove')->name('delete');
+        Route::put('{id}', 'LetterController@update')->name('update');
     });
 
     Route::prefix('outgoing')->as('outgoing.')->group(function(){
@@ -44,11 +45,15 @@ Route::middleware(['auth'])->group(function(){
         Route::get('print/{id}', 'LetterController@print')->name('print');
         Route::get('create', 'LetterController@createOutgoing')->name('create');
         Route::post('store', 'LetterController@store')->name('store');
+        Route::get('edit/{id}', 'LetterController@editOutgoing')->name('edit');
+        Route::put('{id}', 'LetterController@update')->name('update');
     });
 
     Route::prefix('incoming')->as('incoming.')->group(function(){
         Route::get('/', 'LetterController@incoming')->name('list');
         Route::get('create', 'LetterController@createIncoming')->name('create');
+        Route::get('update/{id}', 'LetterController@updateIncoming')->name('update');
+
     });
 
     Route::prefix('dispositions')->as('dispositions.')->group(function(){

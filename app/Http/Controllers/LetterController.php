@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\StoreLetterRequest;
+use App\Http\Requests\UpdateLetterRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -15,6 +17,7 @@ use App\Models\Dispositions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 
@@ -36,7 +39,7 @@ class LetterController extends Controller
             $pdf->setPaper('A4', 'portrait');
             return $pdf->download("$letter->regarding.pdf");
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 
@@ -77,12 +80,33 @@ class LetterController extends Controller
         ]);
     }
 
+    public function editOutgoing($id): View
+    {
+        $letter = Letter::findOrFail($id);
+
+        return view('outgoing.edit', [
+            'letter' => $letter,
+            'classifications' => Classification::all(),
+        ]);
+    }
+
     public function createIncoming(): View
     {
         return view('incoming.create', [
             'classifications' => Classification::all(),
         ]);
     }
+
+    public function updateIncoming($id): View
+    {
+        $letter = Letter::findOrFail($id);
+
+        return view('incoming.edit', [
+            'letter' => $letter,
+            'classifications' => Classification::all()
+        ]);
+    }
+
 
     public function updateStatus(UpdateStatusRequest $request): RedirectResponse
     {
@@ -117,7 +141,7 @@ class LetterController extends Controller
                 ->with('success', 'Success update status');
         } catch (\Throwable $exception) {
             // LOG::error($exception->getMessage());
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
 
     }
@@ -149,7 +173,57 @@ class LetterController extends Controller
                 ->with('success', __('Success save Letter'));
         } catch (\Throwable $exception) {
             // Log::error($exception->getMessage());
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
+        }
+    }
+
+    public function update(UpdateLetterRequest $request, $id): RedirectResponse
+    {
+        try {
+            $user = auth()->user();
+            $letter = Letter::findOrFail($id);
+
+            if($request->letter_number != $letter->letter_number)
+            {
+                $request->validate([
+                    'letter_number' => [Rule::unique('letters')]
+                ]);
+            }
+
+            $updatedLetter = $request->validated();
+
+            $letter->update($updatedLetter);
+
+            if ($request->hasFile('attachments')) {
+                foreach ($request->attachments as $attachment) {
+                    $extension = $attachment->getClientOriginalExtension();
+                    if (!in_array($extension, ['png', 'jpg', 'jpeg', 'pdf'])) continue;
+                    $filename = time() . '-' . $attachment->getClientOriginalName();
+                    $filename = str_replace(' ', '-', $filename);
+                    $attachment->storeAs('public/attachments', $filename);
+                    Attachment::create([
+                        'filename' => $filename,
+                        'extension' => $extension,
+                        'user_id' => $user->id,
+                        'letter_id' => $letter->id,
+                    ]);
+                }
+            }
+
+            foreach ($request->delete_files as $fileId) {
+                $attachment = Attachment::where('user_id', $user->id)->find($fileId);
+                if($attachment)
+                {
+                    Storage::delete("public/attachments/{$attachment->filename}");
+                    $attachment->delete();
+                }
+            }
+
+            return redirect()
+                ->back()
+                ->with('success', __('Success update Letter'));
+        } catch (\Throwable $exception) {
+            return back()->withErrors($exception->getMessage());
         }
     }
 
@@ -174,7 +248,7 @@ class LetterController extends Controller
             return back()
                 ->with('success', 'Success delete Letter');
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 

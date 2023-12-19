@@ -58,7 +58,7 @@ class DispositionController extends Controller
             return back()
                 ->with('success', 'Success update status');
         } catch (\Throwable $exception) {
-            return back()->with('error', $exception->getMessage());
+            return back()->withErrors($exception->getMessage());
         }
     }
 
