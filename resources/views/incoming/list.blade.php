@@ -5,6 +5,9 @@
     <div class="w-100 d-flex justify-content-end mb-2">
         <a href="{{ route('incoming.create') }}" class="btn btn-primary">New Letter</a>
     </div>
+    @if(count($data) == 0)
+    <p class="text-center">there is incoming letter yet</p>
+    @endif
     @foreach($data as $letter)
         <a href="{{ route('letter.show', $letter->id) }}" style="text-decoration: none; color: #000;">
             <x-letter-card
