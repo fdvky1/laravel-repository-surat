@@ -14,12 +14,12 @@
                     {{ $type == 'incoming' ? $letter->from : $letter->to }}
                 </small>
             </div>
-            <div class="card-title d-flex flex-row">
-                <div class="d-inline-block mx-2 text-end text-black">
+            <div class="card-title d-flex justify-content-between">
+                <div class="mx-2 text-black">
                     <small class="d-block text-secondary">Letter date</small>
                     {{ $letter->formatted_letter_date }}
                 </div>
-                <div class="dropdown d-inline-block">
+                <div class="dropdown">
                     @if(!Route::is('*.show') || $letter->created_by == Auth::user()->id)
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="dropdown-{{ $type }}-{{ $letter->id }}" aria-haspopup="true" aria-expanded="true">
                         <i class="fas fa-ellipsis-vertical fa-fw fa-lg"></i>
