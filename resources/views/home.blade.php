@@ -3,7 +3,7 @@
 @section('main-content')
 
 
-<div class="container">
+<div class="">
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Dashboard') }}</h1>
