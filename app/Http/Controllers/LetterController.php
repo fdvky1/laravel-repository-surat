@@ -188,7 +188,9 @@ class LetterController extends Controller
             if($request->letter_number != $letter->letter_number)
             {
                 $request->validate([
-                    'letter_number' => [Rule::unique('letters')]
+                    'letter_number' => [Rule::unique('letters')->where(function($query) use ($letter){
+                        return $query->where('type', $letter->type);
+                    })]
                 ]);
             }
 
@@ -212,12 +214,15 @@ class LetterController extends Controller
                 }
             }
 
-            foreach ($request->delete_files as $fileId) {
-                $attachment = Attachment::where('user_id', $user->id)->find($fileId);
-                if($attachment)
-                {
-                    Storage::delete("public/attachments/{$attachment->filename}");
-                    $attachment->delete();
+            if ($request->has('delete_files'))
+            {
+                foreach ($request->delete_files as $fileId) {
+                    $attachment = Attachment::where('user_id', $user->id)->find($fileId);
+                    if($attachment)
+                    {
+                        Storage::delete("public/attachments/{$attachment->filename}");
+                        $attachment->delete();
+                    }
                 }
             }
 
