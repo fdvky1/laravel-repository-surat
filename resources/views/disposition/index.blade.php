@@ -2,6 +2,9 @@
 
 @section('main-content')
 <div class="px-4">
+    @if(count($dispositions) == 0)
+    <p class="text-center">there are no letters pending approval</p>
+    @endif
     @foreach($dispositions as $disposition)
         <a href="{{ route('dispositions.show', $disposition->letter_id) }}" style="text-decoration: none; color: #000;">
             <x-letter-card
