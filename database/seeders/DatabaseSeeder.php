@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'header' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
             'subheader' => 'Lorem ipsum dolor sit amet',
             'address' => 'Baker street 221B',
-            'contact' => '(941) 746-5111',
+            'contact' => '(123) 456-7890',
             'position_name' => 'CTO',
             'name' => 'Someone'
         ]);
