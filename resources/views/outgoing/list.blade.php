@@ -22,21 +22,19 @@
 
 <div class="px-4">
     <div class="d-flex justify-content-between">
-        <div class="form-group focused">
-            <label class="form-control-label" for="status">Filter by:</label>
-            <form action="{{ route('outgoing.list') }}" method="GET" class="d-flex justify-content-between" >
-                <div class="mr-2">
-                    <select class="form-control mb-1" name="status" style="max-width: 10rem;">
-                        <option value="">Filter by Status</option>
-                        <option value="all">All</option>
-                        <option value="published">Published</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="pending">Waiting fo review</option>
-                        <option value="require_revision">Require Revision</option>
-                    </select>
-                </div>
-            </form>
-        </div>
+        <form action="{{ route('outgoing.list') }}" method="GET" class="d-flex justify-content-between" id="form-filter">
+            <div class="form-group focused">
+                <label class="form-control-label" for="status">Filter by Status</label>
+                <select class="form-control mb-1" name="status" style="max-width: 10rem;">
+                    <option value="">Select</option>
+                    <option value="all">All</option>
+                    <option value="published">Published</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="pending">Waiting for review</option>
+                    <option value="require_revision">Require Revision</option>
+                </select>
+            </div>
+        </form>
 
 
         <div class="d-flex justify-content-end gap-2 mt-3" >
@@ -52,6 +50,9 @@
 
         </div>
     </div>
+    @if(count($data) == 0)
+    <p class="text-center">there is outgoing letter yet</p>
+    @endif
     @foreach($data as $letter)
     <a href="{{ route('letter.show', $letter->id) }}" style="text-decoration: none; color: #000;">
         <x-letter-card
@@ -68,8 +69,10 @@
 
 @push('script')
     <script>
-        document.querySelector('select[name="status"]').onchange = () => {
-            document.querySelector("#form-filter").submit();
+        document.querySelector('select[name="status"]').onchange = (e) => {
+            if(e.target.value != ""){
+                document.querySelector("#form-filter").submit();
+            }
         }
         document.querySelector('.text-to-copy').addEventListener('click', function() {
             const textToCopy = this.getAttribute('data-last-number');
