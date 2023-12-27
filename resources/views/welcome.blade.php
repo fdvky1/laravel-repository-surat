@@ -30,7 +30,7 @@
                       @if (Route::has('login'))
                     <li class="nav-item mx-0 mx-lg-1">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ url('/home') }}">Home</a>
                     @else
                     <a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('login') }}">LOGIN</a></li>
 
@@ -61,7 +61,7 @@
                 <p class="masthead-subheading font-weight-light mb-0">contoh saya ini mah kuy</p>
             </div>
         </header>
-    
+
         <!-- Footer-->
         <footer class="footer text-center" id="contact">
             <div class="container">
