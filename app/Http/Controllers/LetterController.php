@@ -54,7 +54,6 @@ class LetterController extends Controller
                     ->when($status && $status !== 'all', function ($query) use ($status) {
                         return $query->where('status', $status);
                     })
-                    ->when()
                     ->outgoing()
                     ->render($request->search)
                     ->get();
