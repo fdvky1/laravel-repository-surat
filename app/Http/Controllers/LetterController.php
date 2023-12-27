@@ -71,9 +71,14 @@ class LetterController extends Controller
     public function incoming(Request $request): View
     {
         $user = auth()->user();
+        $status = $request->input('status');
+
         $letters = Letter::when($user->role == 'user', function($query) use ($user){
                            return  $query->where('status', 'published') ->orWhere('created_by', $user->id);
                          })
+                         ->when($status && $status !== 'all', function ($query) use ($status) {
+                            return $query->where('status', $status);
+                        })
                          ->incoming()
                          ->render($request->search)
                          ->get();

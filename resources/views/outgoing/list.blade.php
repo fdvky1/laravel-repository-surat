@@ -24,7 +24,7 @@
     <div class="d-flex justify-content-between">
         <div class="form-group focused">
             <label class="form-control-label" for="status">Filter by:</label>
-            <form action="{{ route('outgoing.list') }}" method="GET" class="d-flex justify-content-between" id="form-filter">
+            <form action="{{ route('outgoing.list') }}" method="GET" class="d-flex justify-content-between" >
                 <div class="mr-2">
                     <select class="form-control mb-1" name="status" style="max-width: 10rem;">
                         <option value="">Filter by Status</option>
