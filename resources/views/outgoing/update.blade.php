@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('outgoing.update', $letter->id) }}" enctype="multipart/form-data" autocomplete="off">
+                    <form method="POST" action="{{ route('letter.update', $letter->id) }}" enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="type" value="outgoing">

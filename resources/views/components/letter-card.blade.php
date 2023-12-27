@@ -33,8 +33,9 @@
                                 href="{{ route(Route::is('dispositions.*') ? 'dispositions.show' : 'letter.show', $letter->id) }}">View Details</a>
                         @endif
                         @if($letter->created_by == Auth::user()->id)
-                        <a class="dropdown-item"
-                        href="{{ $letter->type === 'incoming' ? route('incoming.update', $letter->id) : route('outgoing.edit', $letter->id) }}">Edit</a>
+                        @if(!in_array($letter->status, ['published', 'rejected']))
+                        <a class="dropdown-item" href="{{ $letter->type === 'incoming' ? route('incoming.update', $letter->id) : route('outgoing.update', $letter->id) }}">Edit</a>
+                        @endif
                             <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
                                     method="post">
                                 @csrf
