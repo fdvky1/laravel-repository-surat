@@ -50,18 +50,20 @@ class LetterController extends Controller
         $user = auth()->user();
         $status = $request->input('status');
 
-        $letters = Letter::when($user->role == 'user', function($query) use ($user) {
+        $lastLetter = Letter::outgoing()->where('status', 'published')->orderBy('letter_number', 'desc')->first();
+        $letters = Letter::outgoing()
+                    ->when($user->role == 'user', function($query) use ($user) {
                         return $query->where('status', 'published')->orWhere('created_by', $user->id);
                     })
                     ->when($status && $status !== 'all', function ($query) use ($status) {
                         return $query->where('status', $status);
                     })
-                    ->outgoing()
                     ->render($request->search)
                     ->get();
 
         return view('outgoing.list', [
             'data' => $letters,
+            'last_letter_number' => $lastLetter ? $lastLetter->letter_number.'/'.$lastLetter->classification_code.'/'.$lastLetter->month.'/'.$lastLetter->year : '',
         ]);
     }
 
