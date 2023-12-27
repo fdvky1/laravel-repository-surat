@@ -67,6 +67,9 @@
 
         </div>
     </div>
+    @if(count($data) == 0)
+    <p class="text-center">there is incoming letter yet</p>
+    @endif
     @foreach($data as $letter)
     @if($letter)
         <a href="{{ route('letter.show', $letter->id) }}" style="text-decoration: none; color: #000;">

@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +15,12 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login'); //view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false
+]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -76,6 +76,12 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/', 'UserController@store')->name('store');
         Route::put('{user}', 'UserController@update')->name('update');
         Route::delete('{user}', 'UserController@destroy')->name('destroy');
+    });
+
+    Route::prefix('setting')->middleware(['role:admin,superadmin'])->as('setting.')->group(function(){
+        Route::get('/', 'SettingController@show')->name('show');
+        Route::put('/', 'SettingController@update')->name('update');
+        Route::post('update-photo', 'SettingController@updatePhoto')->name('update_photo');
     });
 
     Route::post('/profile/update-photo', 'ProfileController@updateProfilePhoto')->name('profile.update.photo');

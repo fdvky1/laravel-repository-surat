@@ -67,8 +67,6 @@
 
         </div>
     </div>
-
-
     @foreach($data as $letter)
     @if($letter)
         <a href="{{ route('letter.show', $letter->id) }}" style="text-decoration: none; color: #000;">
