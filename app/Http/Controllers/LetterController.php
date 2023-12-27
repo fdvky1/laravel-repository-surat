@@ -50,18 +50,20 @@ class LetterController extends Controller
         $user = auth()->user();
         $status = $request->input('status');
 
-        $letters = Letter::when($user->role == 'user', function($query) use ($user) {
+        $lastLetter = Letter::outgoing()->where('status', 'published')->orderBy('letter_number', 'desc')->first();
+        $letters = Letter::outgoing()
+                    ->when($user->role == 'user', function($query) use ($user) {
                         return $query->where('status', 'published')->orWhere('created_by', $user->id);
                     })
                     ->when($status && $status !== 'all', function ($query) use ($status) {
                         return $query->where('status', $status);
                     })
-                    ->outgoing()
                     ->render($request->search)
                     ->get();
 
         return view('outgoing.list', [
             'data' => $letters,
+            'last_letter_number' => $lastLetter ? $lastLetter->letter_number.'/'.$lastLetter->classification_code.'/'.$lastLetter->month.'/'.$lastLetter->year : '',
         ]);
     }
 
@@ -97,7 +99,7 @@ class LetterController extends Controller
     {
         $letter = Letter::findOrFail($id);
 
-        return view('outgoing.edit', [
+        return view('outgoing.update', [
             'letter' => $letter,
             'classifications' => Classification::all(),
         ]);
@@ -114,7 +116,7 @@ class LetterController extends Controller
     {
         $letter = Letter::findOrFail($id);
 
-        return view('incoming.edit', [
+        return view('incoming.update', [
             'letter' => $letter,
             'classifications' => Classification::all()
         ]);
@@ -135,7 +137,7 @@ class LetterController extends Controller
                     ]);
                 }
             }
-            if($req['status'] != 'published' && $req['note'] && strlen($req['note']) > 0){
+            if($req['note'] && strlen($req['note']) > 0){
                 Notes::create([
                     'user_id' => $user->id,
                     'letter_id' => $req['letter_id'],
@@ -143,8 +145,9 @@ class LetterController extends Controller
                 ]);
             }
             if ($req['status'] == 'published'){
-                Letter::where('type', 'outgoing')->where('id', $req['letter_id'])->update([
-                    'letter_number' => (Letter::where('type', 'outgoing')->where('status', 'published')->count() + 1)
+                $lastLetter = Letter::outgoing()->where('status', 'published')->orderBy('letter_number', 'desc')->first();
+                Letter::outgoing()->where('id', $req['letter_id'])->update([
+                    'letter_number' => $lastLetter ? $lastLetter->letter_number + 1 : 1 
                 ]);
             }
             Letter::where('id', $req['letter_id'])->update([
