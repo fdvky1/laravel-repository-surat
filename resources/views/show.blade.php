@@ -117,7 +117,7 @@
                 <div class="form-group focused">
                     <label class="form-control-label" for="status">Change Status</label>
                     <div class="d-sm-flex" style="gap: 0.5rem;">
-                        <select class="form-control mb-1" name="status" style="max-width: 10rem;" id="status" @if(in_array($data->status,['published', 'rejected', 'disposition'])) {{'disabled'}} @endif>
+                        <select class="form-control mb-1 w-100" style="max-width: 20rem;" name="status" id="status" @if(in_array($data->status,['published', 'rejected', 'disposition'])) {{'disabled'}} @endif>
                             <option value="">Select Status</option>
                             <option value="published">Publish</option>
                             <option value="require_revision">Require Revision</option>
@@ -125,7 +125,7 @@
                             <option value="disposition">Disposition</option>
                         </select>
                         @if(count($users))
-                        <div class="d-none mb-1" style="min-width: 15rem;" id="select-container">
+                        <div class="d-none mb-1 w-100" style="max-width: 20rem;" id="select-container">
                             <select class="fstdropdown-select" style="text-transform: capitalize;" id="user">
                                 <option value="">Select User</option>
                                 @foreach($users as $user)
@@ -138,8 +138,8 @@
                             </select>
                         </div>
                         @endif
-                        <input type="text" name="note" id="note" class="form-control d-none mb-1" style="max-width: 13rem;" placeholder="Note">
-                        <button type="submit" class="btn btn-primary" id="btn-submit" disabled>save</button>
+                        <input type="text" name="note" id="note" class="form-control d-none mb-1 w-100" style="max-width: 20rem;" placeholder="Note">
+                        <button type="submit" class="btn btn-primary w-100 col-12" style="max-width: 7rem;" id="btn-submit" disabled>save</button>
                     </div>
                 </div>
                 <div id="badge-container">
