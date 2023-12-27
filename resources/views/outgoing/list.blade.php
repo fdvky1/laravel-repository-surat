@@ -82,7 +82,7 @@
             </x-letter-card>
         </a>
         @endif
-    @endforeach
+     @endforeach
     @endif
 </div>
 
