@@ -33,9 +33,9 @@
    <!-- Sidebar - Brand -->
    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
+                <i class="fas fa-envelope"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">Letter <sup>repo</sup></div>
         </a>
 
         <!-- Divider -->
@@ -75,7 +75,7 @@
 
         <li class="nav-item {{ Nav::isRoute('dispositions.list') }}">
             <a class="nav-link" href="{{ route('dispositions.list') }}">
-                <i class="fas fa-fw fa-sort"></i>
+                <i class="fas fa-fw fa-forward"></i>
                 <span>Dispositions</span>
             </a>
         </li>
