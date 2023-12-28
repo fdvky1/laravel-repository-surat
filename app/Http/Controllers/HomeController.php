@@ -32,13 +32,13 @@ class HomeController extends Controller
         $incoming = Letter::incoming()->where('status', 'published')->whereMonth('created_at', date('m'))->count();
         $outgoing = Letter::outgoing()->where('status', 'published')->whereMonth('created_at', date('m'))->count();
         $dispositions = Dispositions::where('user_id', $user->id)->where('status', 'pending')->count();
-
+        $pendingLetters = Letter::where('status','pending')->whereMonth('created_at',date('m'))->count();
         $widget = [
             'users' => $users,
             'incoming' => $incoming,
             'outgoing' => $outgoing,
-            'dispositions' => $dispositions
-            //...
+            'dispositions' => $dispositions,
+            'pending' => $pendingLetters
         ];
 
         return view('home', compact('widget'));
