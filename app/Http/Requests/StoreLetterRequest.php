@@ -23,6 +23,7 @@ class StoreLetterRequest extends FormRequest
      */
     public function rules(): array
     {
+        $attachments = $this->file('attachments');
         return [
             'from' => [Rule::requiredIf($this->type == 'incoming')],
             'to' => [Rule::requiredIf($this->type == 'outgoing')],
@@ -31,7 +32,12 @@ class StoreLetterRequest extends FormRequest
             })],
             'letter_date' => [Rule::requiredIf($this->type == 'outgoing')],
             'received_date' => [Rule::requiredIf($this->type == 'incoming')],
-            'content' => [Rule::requiredIf($this->type == 'outgoing')],
+            'content' => [
+                'nullable',
+                Rule::requiredIf(function () use ($attachments) {
+                    return $this->type == 'outgoing' && empty($attachments);
+                }),
+            ],
             'regarding' => ['required'],
             'note' => ['nullable'],
             'type' => ['required'],

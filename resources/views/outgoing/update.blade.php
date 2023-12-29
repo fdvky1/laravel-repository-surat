@@ -95,7 +95,7 @@
                             </div>
                             <div>
                                 <div class="form-group focused">
-                                    <label class="form-control-label" for="content">Content<span class="small text-danger">*</span></label>
+                                    <label class="form-control-label" for="content">Content<br class="d-md-none"><span class="small text-danger">*Can be left blank if you have entered the letter manually in the attachment</span></label>
                                     <textarea id="content" class="form-control" name="content">{{ old('content', $letter->content) }}</textarea>
                                 </div>
                             </div>
