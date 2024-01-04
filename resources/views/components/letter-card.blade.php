@@ -14,12 +14,12 @@
                     {{ $type == 'incoming' ? $letter->from : $letter->to }}
                 </small>
             </div>
-            <div class="card-title d-flex flex-row">
-                <div class="d-inline-block mx-2 text-end text-black">
+            <div class="card-title d-flex justify-content-between">
+                <div class="mx-2 text-black">
                     <small class="d-block text-secondary">Letter date</small>
                     {{ $letter->formatted_letter_date }}
                 </div>
-                <div class="dropdown d-inline-block">
+                <div class="dropdown">
                     @if(!Route::is('*.show') || $letter->created_by == Auth::user()->id)
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="dropdown-{{ $type }}-{{ $letter->id }}" aria-haspopup="true" aria-expanded="true">
                         <i class="fas fa-ellipsis-vertical fa-fw fa-lg"></i>
@@ -33,8 +33,9 @@
                                 href="{{ route(Route::is('dispositions.*') ? 'dispositions.show' : 'letter.show', $letter->id) }}">View Details</a>
                         @endif
                         @if($letter->created_by == Auth::user()->id)
-                        <a class="dropdown-item"
-                        href="{{ $letter->type === 'incoming' ? route('incoming.update', $letter->id) : route('outgoing.edit', $letter->id) }}">Edit</a>
+                        @if(!in_array($letter->status, ['published', 'rejected']))
+                        <a class="dropdown-item" href="{{ $letter->type === 'incoming' ? route('incoming.update', $letter->id) : route('outgoing.update', $letter->id) }}">Edit</a>
+                        @endif
                             <form action="{{ route('letter.delete', $letter->id) }}" class="d-inline"
                                     method="post">
                                 @csrf

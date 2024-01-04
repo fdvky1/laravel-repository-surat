@@ -30,13 +30,13 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center" href="/home">
+   <!-- Sidebar - Brand -->
+   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-2">{{ Auth::user()->role }}</div>
-            </a>
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Letter <sup>repo</sup></div>
+        </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -75,7 +75,7 @@
 
         <li class="nav-item {{ Nav::isRoute('dispositions.list') }}">
             <a class="nav-link" href="{{ route('dispositions.list') }}">
-                <i class="fas fa-fw fa-sort"></i>
+                <i class="fas fa-fw fa-forward"></i>
                 <span>Dispositions</span>
             </a>
         </li>
