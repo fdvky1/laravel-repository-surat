@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-md-4 text-center">
                             @if($user->profile_photo)
-                            <img id="preview_image" src="{{ asset('storage/profiles/' . Auth::user()->profile_photo) }}" alt="Profile Photo" class="img-fluid rounded-circle font-weight-bold" style="object-fit: cover; width: 150px; height: 150px;">
+                            <img id="preview_image" src="{{ asset('storage/profiles/' . $user->profile_photo) }}" alt="Profile Photo" class="img-fluid rounded-circle font-weight-bold" style="object-fit: cover; width: 150px; height: 150px;">
                             @else
                                 <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ $user->name[0] }}"></figure>
                             @endif
