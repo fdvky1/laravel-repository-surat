@@ -52,7 +52,7 @@ class LetterController extends Controller
 
         $lastLetter = Letter::outgoing()->where('status', 'published')->orderBy('letter_number', 'desc')->first();
         $letters = Letter::outgoing()
-                    ->when($user->role == 'user', function($query) use ($user) {
+                    ->when($user->role == 'user' && !$status, function($query) use ($user) {
                         return $query->where('status', 'published')->orWhere('created_by', $user->id);
                     })
                     ->when($status && $status !== 'all', function ($query) use ($status) {
@@ -73,8 +73,8 @@ class LetterController extends Controller
         $user = auth()->user();
         $status = $request->input('status');
 
-        $letters = Letter::when($user->role == 'user', function($query) use ($user){
-                           return  $query->where('status', 'published') ->orWhere('created_by', $user->id);
+        $letters = Letter::when($user->role == 'user' && !$status, function($query) use ($user){
+                           return  $query->where('status', 'published')->orWhere('created_by', $user->id);
                          })
                          ->when($status && $status !== 'all', function ($query) use ($status) {
                             return $query->where('status', $status);
